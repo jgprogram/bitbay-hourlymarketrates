@@ -6,6 +6,8 @@ import com.jgprogram.bitbay.marketrates.domain.model.MarketRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class MarketRateService {
 
@@ -27,5 +29,9 @@ public class MarketRateService {
         );
 
         marketRateRepository.add(marketRate);
+    }
+
+    public Date latestRateDate() {
+        throw new UnsupportedOperationException("Unimplemented yet.");
     }
 }
