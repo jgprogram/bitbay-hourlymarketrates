@@ -9,4 +9,6 @@ public interface MarketRateDataCache {
     void add(MarketRateDataLoaded marketRateDataLoaded);
 
     List<MarketRateDataLoaded> findByRequestId(String requestId);
+
+    void removeByRequestId(String requestId);
 }
