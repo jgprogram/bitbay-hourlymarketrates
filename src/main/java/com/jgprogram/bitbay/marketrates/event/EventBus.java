@@ -18,11 +18,11 @@ public class EventBus {
         return instance;
     }
 
-    public <T extends EventSubscriber> void subscribe(T subscriber) {
+    public synchronized  <T extends EventSubscriber> void subscribe(T subscriber) {
         subscribers.add(subscriber);
     }
 
-    public <T extends Event> void publish(T aEvent) {
+    public synchronized <T extends Event> void publish(T aEvent) {
         Class<?> aDomainEventClass = aEvent.getClass();
 
         subscribers.stream()

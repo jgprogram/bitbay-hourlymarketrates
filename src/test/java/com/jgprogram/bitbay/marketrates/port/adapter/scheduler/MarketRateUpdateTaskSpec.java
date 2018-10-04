@@ -1,5 +1,6 @@
 package com.jgprogram.bitbay.marketrates.port.adapter.scheduler;
 
+import com.jgprogram.bitbay.marketrates.Specyfication;
 import com.jgprogram.bitbay.marketrates.application.MarketRateService;
 import com.jgprogram.bitbay.marketrates.application.dto.MarketRateDTO;
 import com.jgprogram.bitbay.marketrates.domain.model.MarketRate;
@@ -16,7 +17,7 @@ import java.util.stream.Stream;
 
 import static org.mockito.Mockito.*;
 
-public class MarketRateUpdateTaskSpec {
+public class MarketRateUpdateTaskSpec extends Specyfication {
 
     @Test
     public void when_last_rate_is_older_than_1_hour_should_ask_BitBay_CandlestickChartAdapter_for_new_data() {
@@ -54,41 +55,6 @@ public class MarketRateUpdateTaskSpec {
         verifyZeroInteractions(candlestickChartAdapter);
         verify(marketRateService, times(0))
                 .createMarketRate(any(MarketRateDTO.class));
-    }
-
-    private Date currentFullHour() {
-        return Date.from(
-                LocalDateTime.now()
-                        .withMinute(0)
-                        .withSecond(0)
-                        .withNano(0)
-                        .atZone(ZoneId.systemDefault())
-                        .toInstant());
-
-    }
-
-    private Date previousFullHour(Date current) {
-        return Date.from(
-                LocalDateTime.ofInstant(current.toInstant(), ZoneId.systemDefault())
-                        .withMinute(0)
-                        .withSecond(0)
-                        .withNano(0)
-                        .minusHours(1)
-                        .atZone(ZoneId.systemDefault())
-                        .toInstant());
-
-    }
-
-    private Date nextFullHour(Date current) {
-        return Date.from(
-                LocalDateTime.ofInstant(current.toInstant(), ZoneId.systemDefault())
-                        .withMinute(0)
-                        .withSecond(0)
-                        .withNano(0)
-                        .plusHours(1)
-                        .atZone(ZoneId.systemDefault())
-                        .toInstant());
-
     }
 
     private MarketRate marketRateWithDate(LocalDateTime dateTime) {

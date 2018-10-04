@@ -1,5 +1,6 @@
 package com.jgprogram.bitbay.marketrates.port.adapter.cache;
 
+import com.jgprogram.bitbay.marketrates.Specyfication;
 import com.jgprogram.bitbay.marketrates.application.MarketRateService;
 import com.jgprogram.bitbay.marketrates.application.dto.MarketRateDTO;
 import com.jgprogram.bitbay.marketrates.port.adapter.bitbay.MarketRateDataLoadCompleted;
@@ -17,7 +18,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
-public class MarketRateCacheSpec {
+public class MarketRateCacheSpec extends Specyfication {
 
     @Test
     public void should_receive_and_store_RateLoaded_event_with_requestId_in_cache() {
@@ -88,7 +89,7 @@ public class MarketRateCacheSpec {
         return new MarketRateDataLoaded(
                 requestId,
                 "BTC-PLN",
-                null,
+                currentFullHour(),
                 51280D,
                 50400D,
                 51280D,
