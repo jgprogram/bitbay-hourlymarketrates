@@ -1,4 +1,4 @@
-package com.jgprogram.bitbay.marketrates.port.adapter.task;
+package com.jgprogram.bitbay.marketrates.port.adapter.scheduler;
 
 import com.jgprogram.bitbay.marketrates.application.MarketRateService;
 import com.jgprogram.bitbay.marketrates.application.dto.MarketRateDTO;
@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 import static org.mockito.Mockito.*;
 
 public class MarketRateUpdateTaskSpec {
+
     @Test
     public void when_last_rate_is_older_than_1_hour_should_ask_BitBay_CandlestickChartAdapter_for_new_data() {
         final Date previousFullHour = previousFullHour(new Date());
@@ -36,6 +37,33 @@ public class MarketRateUpdateTaskSpec {
                 .getSince(previousFullHour);
         verify(marketRateService, times(1))
                 .createMarketRate(any(MarketRateDTO.class));
+
+    }
+
+    @Test
+    public void when_last_rate_is_not_older_than_1_hour_it_should_not_ask_BitBay_CandlestickChartAdapter_for_new_data() {
+        final Date currentFullHour = currentFullHour();
+        CandlestickChartAdapter candlestickChartAdapter = mock(CandlestickChartAdapter.class);
+        MarketRateService marketRateService = mock(MarketRateService.class);
+        when(marketRateService.latestRateDate())
+                .thenReturn(currentFullHour);
+        MarketRateUpdateTask marketRateUpdateTask = new MarketRateUpdateTask(marketRateService, candlestickChartAdapter);
+
+        marketRateUpdateTask.loadLatest();
+
+        verifyZeroInteractions(candlestickChartAdapter);
+        verify(marketRateService, times(0))
+                .createMarketRate(any(MarketRateDTO.class));
+    }
+
+    private Date currentFullHour() {
+        return Date.from(
+                LocalDateTime.now()
+                        .withMinute(0)
+                        .withSecond(0)
+                        .withNano(0)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant());
 
     }
 

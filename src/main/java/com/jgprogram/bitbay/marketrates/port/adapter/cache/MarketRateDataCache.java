@@ -1,0 +1,12 @@
+package com.jgprogram.bitbay.marketrates.port.adapter.cache;
+
+import com.jgprogram.bitbay.marketrates.port.adapter.bitbay.MarketRateDataLoaded;
+
+import java.util.List;
+
+public interface MarketRateDataCache {
+
+    void add(MarketRateDataLoaded marketRateDataLoaded);
+
+    List<MarketRateDataLoaded> findByRequestId(String requestId);
+}
