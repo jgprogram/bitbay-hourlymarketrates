@@ -1,6 +1,6 @@
 package com.jgprogram.bitbay.marketrates.port.adapter.cache;
 
-import com.jgprogram.bitbay.marketrates.Specyfication;
+import com.jgprogram.bitbay.marketrates.Specification;
 import com.jgprogram.bitbay.marketrates.application.MarketRateService;
 import com.jgprogram.bitbay.marketrates.application.dto.MarketRateDTO;
 import com.jgprogram.bitbay.marketrates.port.adapter.bitbay.MarketRateDataLoadCompleted;
@@ -13,12 +13,13 @@ import org.mockito.ArgumentCaptor;
 import java.util.Arrays;
 import java.util.UUID;
 
+import static com.jgprogram.common.util.Time.*;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
-public class MarketRateCacheSpec extends Specyfication {
+public class MarketRateCacheSpec extends Specification {
 
     @Test
     public void should_receive_and_store_RateLoaded_event_with_requestId_in_cache() {

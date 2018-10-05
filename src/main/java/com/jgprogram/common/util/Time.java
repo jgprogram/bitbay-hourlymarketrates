@@ -1,12 +1,17 @@
-package com.jgprogram.bitbay.marketrates;
+package com.jgprogram.common.util;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class Specyfication {
+public class Time {
 
-    protected Date currentFullHour() {
+    public static Date now() {
+        return new Date();
+    }
+
+    public static Date currentFullHour() {
         return Date.from(
                 LocalDateTime.now()
                         .withMinute(0)
@@ -17,7 +22,7 @@ public class Specyfication {
 
     }
 
-    protected Date previousFullHour(Date current) {
+    public static Date previousFullHour(Date current) {
         return Date.from(
                 LocalDateTime.ofInstant(current.toInstant(), ZoneId.systemDefault())
                         .withMinute(0)
@@ -29,7 +34,7 @@ public class Specyfication {
 
     }
 
-    protected Date nextFullHour(Date current) {
+    public static Date nextFullHour(Date current) {
         return Date.from(
                 LocalDateTime.ofInstant(current.toInstant(), ZoneId.systemDefault())
                         .withMinute(0)
@@ -39,5 +44,21 @@ public class Specyfication {
                         .atZone(ZoneId.systemDefault())
                         .toInstant());
 
+    }
+
+    public static Date oneYearLater(Date since) {
+        LocalDateTime nowDate = LocalDateTime.now();
+        LocalDateTime sinceDate
+                = LocalDateTime.ofInstant(since.toInstant(), ZoneId.systemDefault());
+
+        if (Duration.between(sinceDate, nowDate).compareTo(Duration.ofDays(365)) > 0) {
+            return Date.from(sinceDate.plusYears(1)
+                    .atZone(ZoneId.systemDefault())
+                    .toInstant());
+        } else {
+            return Date.from(nowDate
+                    .atZone(ZoneId.systemDefault())
+                    .toInstant());
+        }
     }
 }

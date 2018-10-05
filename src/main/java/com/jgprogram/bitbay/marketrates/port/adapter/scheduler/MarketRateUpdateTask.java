@@ -1,11 +1,7 @@
 package com.jgprogram.bitbay.marketrates.port.adapter.scheduler;
 
-import com.jgprogram.bitbay.marketrates.application.MarketRateService;
 import com.jgprogram.bitbay.marketrates.application.dto.MarketRateDTO;
-import com.jgprogram.bitbay.marketrates.port.adapter.bitbay.CandlestickChartAdapter;
-import com.jgprogram.bitbay.marketrates.port.adapter.bitbay.CandlestickChartData;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
+import com.jgprogram.bitbay.marketrates.port.adapter.bitbay.MarketRate;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -18,27 +14,27 @@ public class MarketRateUpdateTask {
 
     private static final Duration ONE_HOUR = Duration.ofHours(1);
 
-    private final CandlestickChartAdapter candlestickChartAdapter;
-    private final MarketRateService marketRateService;
+//    private final CandlestickChartAdapter candlestickChartAdapter;
+//    private final MarketRateService marketRateService;
+//
+//    @Autowired
+//    public MarketRateUpdateTask(MarketRateService marketRateService, CandlestickChartAdapter candlestickChartAdapter) {
+//        this.candlestickChartAdapter = candlestickChartAdapter;
+//        this.marketRateService = marketRateService;
+//    }
+//
+//    @Scheduled(fixedDelay = 1800000) //30 min
+//    public void loadLatest() {
+//        final Date latestRateDate = marketRateService.latestRateDate();
+//        if (durationSince(latestRateDate).compareTo(ONE_HOUR) > 0) {
+//            candlestickChartAdapter.getSince(latestRateDate)
+//                    .stream()
+//                    .map(this::mapToMarketRateDto)
+//                    .forEach(marketRateService::createMarketRate);
+//        }
+//    }
 
-    @Autowired
-    public MarketRateUpdateTask(MarketRateService marketRateService, CandlestickChartAdapter candlestickChartAdapter) {
-        this.candlestickChartAdapter = candlestickChartAdapter;
-        this.marketRateService = marketRateService;
-    }
-
-    @Scheduled(fixedDelay = 1800000) //30 min
-    public void loadLatest() {
-        final Date latestRateDate = marketRateService.latestRateDate();
-        if (durationSince(latestRateDate).compareTo(ONE_HOUR) > 0) {
-            candlestickChartAdapter.getSince(latestRateDate)
-                    .stream()
-                    .map(this::mapToMarketRateDto)
-                    .forEach(marketRateService::createMarketRate);
-        }
-    }
-
-    private MarketRateDTO mapToMarketRateDto(CandlestickChartData source) {
+    private MarketRateDTO mapToMarketRateDto(MarketRate source) {
         return new MarketRateDTO(
                 source.getCode(),
                 source.getDate(),

@@ -10,21 +10,21 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 @Service
 public class MarketRateDataAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(MarketRateDataAdapter.class);
 
+    private static final long TIME_TO_WAIT_FOR_RENEW_REQUEST_LIMIT = 60L * 1000L;
+
     private final TradingTickerService tradingTickerService;
     private final TradingCandlestickService tradingCandlestickService;
 
     @Autowired
-    public MarketRateDataAdapter(TradingTickerService tradingTickerService, TradingCandlestickService tradingCandlestickService) {
+    public MarketRateDataAdapter(TradingTickerService tradingTickerService,
+                                 TradingCandlestickService tradingCandlestickService) {
         this.tradingTickerService = tradingTickerService;
         this.tradingCandlestickService = tradingCandlestickService;
     }
@@ -38,14 +38,24 @@ public class MarketRateDataAdapter {
             List<Market> markets = tradingTickerService.getMarkets().get(60, TimeUnit.SECONDS);
             logger.info("Loaded " + markets.size() + " markets.");
 
-            //TODO CREATE TASKS
-            for(Market market : markets) {
-                tradingCandlestickService.getHourlyMarketRatesSince(market.getCode(), since);
-            }
+//            ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_QUERIES_PER_REQUEST);
+//            CompletionService<List<MarketRate>> completionService = new ExecutorCompletionService<>(executorService);
+//
+//
+//
+//            int queryCounter = 0;
+//            for (Market market : markets) {
+//                tradingCandlestickService.getHourlyMarketRatesSince(market.getCode(), since);
+//                queryCounter++;
+//
+//                if (queryCounter == NUMBER_OF_QUERIES_PER_REQUEST) {
+//                    Thread.sleep(TIME_TO_WAIT_FOR_RENEW_REQUEST_LIMIT);
+//                }
+//            }
         } catch (Exception e) {
             EventBus.instance()
                     .publish(new MarketRateDataLoadErrorOccurred(requestId));
-            logger.error("Request " + requestId + " was canceled." , e);
+            logger.error("Request " + requestId + " was canceled.", e);
         } finally {
             return CompletableFuture.completedFuture(null);
         }
