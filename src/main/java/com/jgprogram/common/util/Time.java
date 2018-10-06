@@ -3,6 +3,7 @@ package com.jgprogram.common.util;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 public class Time {
@@ -46,6 +47,17 @@ public class Time {
 
     }
 
+    public static Date nextFullMinute(Date current) {
+        return Date.from(
+                LocalDateTime.ofInstant(current.toInstant(), ZoneId.systemDefault())
+                        .withSecond(0)
+                        .withNano(0)
+                        .plusMinutes(1)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant());
+
+    }
+
     public static Date oneYearLater(Date since) {
         LocalDateTime nowDate = LocalDateTime.now();
         LocalDateTime sinceDate
@@ -60,5 +72,15 @@ public class Time {
                     .atZone(ZoneId.systemDefault())
                     .toInstant());
         }
+    }
+
+    public static long milisToNextFullMinute() {
+        LocalDateTime nowDate = LocalDateTime.now();
+        LocalDateTime nextFullMinute = nowDate
+                .withSecond(0)
+                .withNano(0)
+                .plusMinutes(1);
+
+        return Duration.between(nowDate, nextFullMinute).get(ChronoUnit.MILLIS);
     }
 }

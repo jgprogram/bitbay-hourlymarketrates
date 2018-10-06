@@ -22,7 +22,6 @@ import java.util.concurrent.CompletableFuture;
 @Service
 class TradingCandlestickService extends BBRestClientService {
 
-    private static final Logger logger = LoggerFactory.getLogger(TradingCandlestickService.class);
     private static final String RESOURCE_PATH = "/trading/candle/history/%s/%s?from=%d000&to=%d000";
 
     @Autowired
