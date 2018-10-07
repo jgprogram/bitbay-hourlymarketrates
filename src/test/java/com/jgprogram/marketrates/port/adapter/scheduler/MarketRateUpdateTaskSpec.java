@@ -1,7 +1,7 @@
 package com.jgprogram.marketrates.port.adapter.scheduler;
 
 import com.jgprogram.marketrates.Specification;
-import com.jgprogram.marketrates.port.adapter.bitbay.MarketRate;
+import com.jgprogram.marketrates.bitbay.MarketRate;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

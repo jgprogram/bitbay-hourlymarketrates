@@ -3,6 +3,7 @@ package com.jgprogram.marketrates.port.adapter.bitbay;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jgprogram.common.port.adapter.RestClientService;
+import com.jgprogram.marketrates.port.adapter.bitbay.TradingCandlestickServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import static com.jgprogram.common.util.TimeFullUnit.millisToNextMinute;
 
 abstract class BBRestClientService extends RestClientService {
 
-    private static final Logger logger = LoggerFactory.getLogger(com.jgprogram.marketrates.port.adapter.bitbay.TradingCandlestickService.class);
+    private static final Logger logger = LoggerFactory.getLogger(TradingCandlestickServiceImpl.class);
     private static final int LIMIT_OF_RECONNECT_ATTEMPTS = 3;
 
     private final ThreadLocal<Integer> reconnectAttempts = ThreadLocal.withInitial(() -> 0);

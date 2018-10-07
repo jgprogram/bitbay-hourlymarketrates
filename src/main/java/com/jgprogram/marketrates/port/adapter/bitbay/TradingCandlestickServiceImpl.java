@@ -1,8 +1,8 @@
 package com.jgprogram.marketrates.port.adapter.bitbay;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.jgprogram.common.util.TimeFullUnit;
-import com.jgprogram.marketrates.port.adapter.bitbay.BBRestClientService;
+import com.jgprogram.marketrates.bitbay.MarketRate;
+import com.jgprogram.marketrates.bitbay.TradingCandlestickService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.env.Environment;
@@ -16,17 +16,18 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-class TradingCandlestickService extends BBRestClientService {
+class TradingCandlestickServiceImpl extends BBRestClientService implements TradingCandlestickService {
 
     private static final String RESOURCE_PATH = "/trading/candle/history/%s/%s?from=%d000&to=%d000";
 
     @Autowired
     private Environment env;
 
-    public TradingCandlestickService(RestTemplateBuilder restTemplateBuilder) {
+    public TradingCandlestickServiceImpl(RestTemplateBuilder restTemplateBuilder) {
         super(restTemplateBuilder.build());
     }
 
+    @Override
     @Async(value = "bibayThreadPool")
     public CompletableFuture<List<MarketRate>> getHourlyMarketRatesSince(String marketCode, Date since, Date to) throws Exception {
         final String url = String.format(

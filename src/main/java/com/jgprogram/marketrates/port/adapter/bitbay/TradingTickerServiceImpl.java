@@ -1,6 +1,8 @@
 package com.jgprogram.marketrates.port.adapter.bitbay;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.jgprogram.marketrates.bitbay.Market;
+import com.jgprogram.marketrates.bitbay.TradingTickerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +15,19 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-class TradingTickerService extends BBRestClientService {
+class TradingTickerServiceImpl extends BBRestClientService implements TradingTickerService {
 
-    private static final Logger logger = LoggerFactory.getLogger(TradingTickerService.class);
+    private static final Logger logger = LoggerFactory.getLogger(TradingTickerServiceImpl.class);
     private static final String RESOURCE_PATH = "/trading/ticker";
 
     @Autowired
     private Environment env;
 
-    public TradingTickerService(RestTemplateBuilder restTemplateBuilder) {
+    public TradingTickerServiceImpl(RestTemplateBuilder restTemplateBuilder) {
         super(restTemplateBuilder.build());
     }
 
+    @Override
     @Async(value = "bibayThreadPool")
     public CompletableFuture<List<Market>> getMarkets() throws Exception {
         final String url = env.getProperty("bitbay.api.url") + RESOURCE_PATH;

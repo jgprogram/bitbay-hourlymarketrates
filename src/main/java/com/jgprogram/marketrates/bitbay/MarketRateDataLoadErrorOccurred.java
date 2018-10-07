@@ -1,4 +1,4 @@
-package com.jgprogram.marketrates.port.adapter.bitbay;
+package com.jgprogram.marketrates.bitbay;
 
 import com.jgprogram.marketrates.event.Event;
 

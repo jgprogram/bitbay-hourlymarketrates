@@ -1,4 +1,4 @@
-package com.jgprogram.marketrates.port.adapter.bitbay;
+package com.jgprogram.marketrates.bitbay;
 
 import com.jgprogram.marketrates.Specification;
 import com.jgprogram.marketrates.application.MarketRateService;
@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 import static com.jgprogram.common.util.TimeFullUnit.*;
 import static org.mockito.Mockito.*;
 
-public class MarketRateDataAdapterSpec extends Specification {
+public class MarketRateDataServiceSpec extends Specification {
 
     @Test
     public void should_load_market_rates_from_bitbay_since_last_hour_and_publish_events_loaded_and_completed() throws Exception {
@@ -30,7 +30,7 @@ public class MarketRateDataAdapterSpec extends Specification {
         final Date previousHour = previousHour(now);
         TradingTickerService tradingTickerService = mockTradingTickerService();
         TradingCandlestickService tradingCandlestickService = mockTradingCandlestickService(previousHour, now);
-        MarketRateDataAdapter adapter = new MarketRateDataAdapter(tradingTickerService, tradingCandlestickService);
+        MarketRateDataService adapter = new MarketRateDataService(tradingTickerService, tradingCandlestickService);
         MarketRateDataLoadedSubscriber dataLoadedSubscriber = marketRateDataLoadedSubscriber();
         MarketRateDataLoadCompletedSubscriber dataLoadCompletedSubscriber = marketRateDataLoadCompletedSubscriber();
 
@@ -48,7 +48,7 @@ public class MarketRateDataAdapterSpec extends Specification {
         final Date previousHour = previousHour(now);
         TradingTickerService tradingTickerService = mockTradingTickerService();
         TradingCandlestickService tradingCandlestickService = mockTradingCandlestickServiceWithException(previousHour, now);
-        MarketRateDataAdapter adapter = new MarketRateDataAdapter(tradingTickerService, tradingCandlestickService);
+        MarketRateDataService adapter = new MarketRateDataService(tradingTickerService, tradingCandlestickService);
         MarketRateDataLoadErrorOccurredSubscriber errorSubscriber = marketRateDataLoadErrorOccurredSubscriber();
 
         adapter.loadDataFromOneYear(previousHour);

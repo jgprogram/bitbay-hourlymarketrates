@@ -1,4 +1,4 @@
-package com.jgprogram.marketrates.port.adapter.bitbay;
+package com.jgprogram.marketrates.bitbay;
 
 import java.util.Date;
 import java.util.Objects;

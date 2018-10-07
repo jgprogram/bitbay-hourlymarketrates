@@ -1,6 +1,6 @@
 package com.jgprogram.marketrates.cache;
 
-import com.jgprogram.marketrates.port.adapter.bitbay.MarketRateDataLoaded;
+import com.jgprogram.marketrates.bitbay.MarketRateDataLoaded;
 
 import java.util.List;
 

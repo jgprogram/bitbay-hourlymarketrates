@@ -1,4 +1,4 @@
-package com.jgprogram.marketrates.port.adapter.bitbay;
+package com.jgprogram.marketrates.bitbay;
 
 import com.jgprogram.marketrates.event.EventBus;
 import com.jgprogram.common.util.TimeFullUnit;
@@ -15,15 +15,15 @@ import java.util.UUID;
 import java.util.concurrent.*;
 
 @Service
-public class MarketRateDataAdapter {
+public class MarketRateDataService {
 
-    private static final Logger logger = LoggerFactory.getLogger(MarketRateDataAdapter.class);
+    private static final Logger logger = LoggerFactory.getLogger(MarketRateDataService.class);
 
-    private final com.jgprogram.marketrates.port.adapter.bitbay.TradingTickerService tradingTickerService;
-    private final com.jgprogram.marketrates.port.adapter.bitbay.TradingCandlestickService tradingCandlestickService;
+    private final TradingTickerService tradingTickerService;
+    private final TradingCandlestickService tradingCandlestickService;
 
     @Autowired
-    public MarketRateDataAdapter(TradingTickerService tradingTickerService,
+    public MarketRateDataService(TradingTickerService tradingTickerService,
                                  TradingCandlestickService tradingCandlestickService) {
         this.tradingTickerService = tradingTickerService;
         this.tradingCandlestickService = tradingCandlestickService;

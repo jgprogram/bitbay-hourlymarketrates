@@ -1,9 +1,11 @@
-package com.jgprogram.marketrates.port.adapter.bitbay;
+package com.jgprogram.marketrates.integration;
 
 import com.jgprogram.marketrates.IntegrationTestCase;
+import com.jgprogram.marketrates.bitbay.Market;
+import com.jgprogram.marketrates.bitbay.MarketRate;
+import com.jgprogram.marketrates.bitbay.TradingCandlestickService;
+import com.jgprogram.marketrates.bitbay.TradingTickerService;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;

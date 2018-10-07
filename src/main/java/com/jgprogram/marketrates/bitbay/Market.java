@@ -1,8 +1,8 @@
-package com.jgprogram.marketrates.port.adapter.bitbay;
+package com.jgprogram.marketrates.bitbay;
 
 import java.util.Objects;
 
-class Market {
+public class Market {
     private String code;
 
     public Market(String code) {

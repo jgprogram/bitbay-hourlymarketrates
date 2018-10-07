@@ -1,7 +1,7 @@
 package com.jgprogram.marketrates.port.adapter.scheduler;
 
 import com.jgprogram.marketrates.application.dto.MarketRateDTO;
-import com.jgprogram.marketrates.port.adapter.bitbay.MarketRate;
+import com.jgprogram.marketrates.bitbay.MarketRate;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;

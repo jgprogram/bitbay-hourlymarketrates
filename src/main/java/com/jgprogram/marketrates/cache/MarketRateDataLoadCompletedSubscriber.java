@@ -3,9 +3,8 @@ package com.jgprogram.marketrates.cache;
 import com.jgprogram.marketrates.application.MarketRateService;
 import com.jgprogram.marketrates.application.dto.MarketRateDTO;
 import com.jgprogram.marketrates.event.EventSubscriber;
-import com.jgprogram.marketrates.port.adapter.bitbay.MarketRateDataLoadCompleted;
-import com.jgprogram.marketrates.port.adapter.bitbay.MarketRateDataLoaded;
-import com.jgprogram.marketrates.cache.MarketRateDataCache;
+import com.jgprogram.marketrates.bitbay.MarketRateDataLoadCompleted;
+import com.jgprogram.marketrates.bitbay.MarketRateDataLoaded;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
