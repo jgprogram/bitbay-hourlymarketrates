@@ -42,7 +42,7 @@ public class MarketRateCacheSpec extends Specification {
     @Test
     public void after_MarketRateDataLoadCompleted_should_get_data_from_cache_by_requestId_and_push_it_to_MarketRateService() {
         final String requestId = UUID.randomUUID().toString();
-        MarketRateDataLoadCompleted event = new MarketRateDataLoadCompleted(requestId);
+        MarketRateDataLoadCompleted event = new MarketRateDataLoadCompleted(requestId, previousHour(currentHour()));
         MarketRateDataLoaded expectedMarketRateDataLoaded = marketRateDataLoaded(requestId);
         MarketRateDataCache cache = mock(MarketRateDataCache.class);
         when(cache.findByRequestId(requestId))

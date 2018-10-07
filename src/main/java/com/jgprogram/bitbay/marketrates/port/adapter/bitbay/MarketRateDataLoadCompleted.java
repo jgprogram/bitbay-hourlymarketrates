@@ -8,10 +8,12 @@ public class MarketRateDataLoadCompleted implements Event {
 
     private final String requestId;
     private final Date occurredOn;
+    private final Date dataSince;
 
-    public MarketRateDataLoadCompleted(String requestId) {
+    public MarketRateDataLoadCompleted(String requestId, Date since) {
         this.requestId = requestId;
         this.occurredOn = new Date();
+        this.dataSince = since;
     }
 
     public String requestId() {
@@ -21,5 +23,9 @@ public class MarketRateDataLoadCompleted implements Event {
     @Override
     public Date occurredOn() {
         return occurredOn;
+    }
+
+    public Date dataSince() {
+        return dataSince;
     }
 }
