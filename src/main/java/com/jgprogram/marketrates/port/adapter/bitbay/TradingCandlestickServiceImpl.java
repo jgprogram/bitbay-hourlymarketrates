@@ -1,7 +1,7 @@
 package com.jgprogram.marketrates.port.adapter.bitbay;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.jgprogram.marketrates.bitbay.MarketRate;
+import com.jgprogram.marketrates.bitbay.MarketRateData;
 import com.jgprogram.marketrates.bitbay.TradingCandlestickService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -29,7 +29,7 @@ class TradingCandlestickServiceImpl extends BBRestClientService implements Tradi
 
     @Override
     @Async(value = "bibayThreadPool")
-    public CompletableFuture<List<MarketRate>> getHourlyMarketRatesSince(String marketCode, Date since, Date to) throws Exception {
+    public CompletableFuture<List<MarketRateData>> getHourlyMarketRatesSince(String marketCode, Date since, Date to) throws Exception {
         final String url = String.format(
                 env.getProperty("bitbay.api.url") + RESOURCE_PATH,
                 marketCode,
@@ -37,13 +37,13 @@ class TradingCandlestickServiceImpl extends BBRestClientService implements Tradi
                 since.toInstant().getEpochSecond(),
                 to.toInstant().getEpochSecond());
 
-        List<MarketRate> marketRates = mapToMarketRates(marketCode, getItemsNode(url));
+        List<MarketRateData> marketRates = mapToMarketRates(marketCode, getItemsNode(url));
 
         return CompletableFuture.completedFuture(marketRates);
     }
 
-    private List<MarketRate> mapToMarketRates(String marketCode, JsonNode itemsNode) throws Exception {
-        List<MarketRate> marketRates = new ArrayList<>();
+    private List<MarketRateData> mapToMarketRates(String marketCode, JsonNode itemsNode) throws Exception {
+        List<MarketRateData> marketRates = new ArrayList<>();
         if(itemsNode.isArray()) {
             for(JsonNode itemNode : itemsNode) {
                 JsonNode timeNode = findNode(0, itemNode);
@@ -54,7 +54,7 @@ class TradingCandlestickServiceImpl extends BBRestClientService implements Tradi
                 JsonNode lNode = findNode("l", candlestickNode);
                 JsonNode vNode = findNode("v", candlestickNode);
 
-                marketRates.add(new MarketRate(
+                marketRates.add(new MarketRateData(
                         marketCode,
                         new Date(timeNode.asLong()),
                         oNode.asDouble(),

@@ -1,7 +1,7 @@
 package com.jgprogram.marketrates.port.adapter.bitbay;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.jgprogram.marketrates.bitbay.Market;
+import com.jgprogram.marketrates.bitbay.MarketData;
 import com.jgprogram.marketrates.bitbay.TradingTickerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,23 +29,23 @@ class TradingTickerServiceImpl extends BBRestClientService implements TradingTic
 
     @Override
     @Async(value = "bibayThreadPool")
-    public CompletableFuture<List<Market>> getMarkets() throws Exception {
+    public CompletableFuture<List<MarketData>> getMarkets() throws Exception {
         final String url = env.getProperty("bitbay.api.url") + RESOURCE_PATH;
-        List<Market> markets = mapToMarkets(getItemsNode(url));
+        List<MarketData> markets = mapToMarkets(getItemsNode(url));
 
         return CompletableFuture.completedFuture(markets);
     }
 
-    private List<Market> mapToMarkets(JsonNode itemsNode) throws Exception {
-        List<Market> markets = new ArrayList<>();
+    private List<MarketData> mapToMarkets(JsonNode itemsNode) throws Exception {
+        List<MarketData> markets = new ArrayList<>();
 
         Iterator<Map.Entry<String, JsonNode>> itemsIter = itemsNode.fields();
         while (itemsIter.hasNext()) {
             JsonNode itemNode = itemsIter.next().getValue();
             JsonNode marketNode = findNode("market", itemNode);
 
-            JsonNode marketCodeNode = findNode("marketCode", marketNode);
-            markets.add(new Market(marketCodeNode.asText()));
+            JsonNode marketCodeNode = findNode("code", marketNode);
+            markets.add(new MarketData(marketCodeNode.asText()));
         }
 
         return Collections.unmodifiableList(markets);

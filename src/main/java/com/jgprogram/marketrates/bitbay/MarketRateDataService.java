@@ -29,18 +29,18 @@ public class MarketRateDataService {
         this.tradingCandlestickService = tradingCandlestickService;
     }
 
-    @Async
+    //@Async
     public CompletableFuture<Void> loadDataFromOneYear(Date since) {
         final Date to = TimeFullUnit.oneYearLater(since);
         final String requestId = UUID.randomUUID().toString();
         logger.info("New market rate data request " + requestId + " was created.");
 
         try {
-            List<Market> markets = tradingTickerService.getMarkets().get(60, TimeUnit.SECONDS);
+            List<MarketData> markets = tradingTickerService.getMarkets().get(60, TimeUnit.SECONDS);
 
-            List<CompletableFuture<List<MarketRate>>> futuresOfMarketRates = loadMarketsRates(markets, since, to);
-            for (CompletableFuture<List<MarketRate>> future : futuresOfMarketRates) {
-                List<MarketRate> marketRates = future.get();
+            List<CompletableFuture<List<MarketRateData>>> futuresOfMarketRates = loadMarketsRates(markets, since, to);
+            for (CompletableFuture<List<MarketRateData>> future : futuresOfMarketRates) {
+                List<MarketRateData> marketRates = future.get();
                 marketRates.forEach(mr -> publishLoadedEvent(requestId, mr));
             }
 
@@ -56,16 +56,16 @@ public class MarketRateDataService {
         }
     }
 
-    private List<CompletableFuture<List<MarketRate>>> loadMarketsRates(List<Market> markets, Date since, Date to) throws Exception {
-        List<CompletableFuture<List<MarketRate>>> futures = new ArrayList<>(markets.size());
-        for (Market m : markets) {
+    private List<CompletableFuture<List<MarketRateData>>> loadMarketsRates(List<MarketData> markets, Date since, Date to) throws Exception {
+        List<CompletableFuture<List<MarketRateData>>> futures = new ArrayList<>(markets.size());
+        for (MarketData m : markets) {
             futures.add(tradingCandlestickService.getHourlyMarketRatesSince(m.getCode(), since, to));
         }
 
         return futures;
     }
 
-    private void publishLoadedEvent(final String requestId, MarketRate marketRates) {
+    private void publishLoadedEvent(final String requestId, MarketRateData marketRates) {
         MarketRateDataLoaded event = new MarketRateDataLoaded(
                 requestId,
                 marketRates.getCode(),

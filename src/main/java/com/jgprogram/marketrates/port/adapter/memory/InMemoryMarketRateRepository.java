@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-@Profile("inMemoryRepositories")
+//@Profile("inMemoryRepositories")
 public class InMemoryMarketRateRepository implements MarketRateRepository {
 
     private final List<MarketRate> rates = new ArrayList<>();
@@ -23,6 +23,10 @@ public class InMemoryMarketRateRepository implements MarketRateRepository {
 
     @Override
     public Date findLatestDate() {
+        if(rates.isEmpty()) {
+            return null;
+        }
+
         return rates.stream()
                 .sorted(Comparator.comparing(MarketRate::date))
                 .skip(rates.size() - 1)

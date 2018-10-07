@@ -6,6 +6,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
 @EnableAsync
-//@EnableScheduling
+@EnableScheduling
 public class AppConfig {
 }

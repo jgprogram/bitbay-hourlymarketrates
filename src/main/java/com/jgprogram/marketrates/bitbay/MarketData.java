@@ -2,10 +2,10 @@ package com.jgprogram.marketrates.bitbay;
 
 import java.util.Objects;
 
-public class Market {
+public class MarketData {
     private String code;
 
-    public Market(String code) {
+    public MarketData(String code) {
         this.code = code;
     }
 
@@ -17,7 +17,7 @@ public class Market {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Market market = (Market) o;
+        MarketData market = (MarketData) o;
         return Objects.equals(code, market.code);
     }
 

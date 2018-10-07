@@ -6,5 +6,5 @@ import java.util.concurrent.CompletableFuture;
 
 public interface TradingCandlestickService {
 
-    CompletableFuture<List<MarketRate>> getHourlyMarketRatesSince(String marketCode, Date since, Date to) throws Exception;
+    CompletableFuture<List<MarketRateData>> getHourlyMarketRatesSince(String marketCode, Date since, Date to) throws Exception;
 }

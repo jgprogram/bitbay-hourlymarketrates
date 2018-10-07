@@ -1,7 +1,7 @@
 package com.jgprogram.marketrates.port.adapter.scheduler;
 
 import com.jgprogram.marketrates.Specification;
-import com.jgprogram.marketrates.bitbay.MarketRate;
+import com.jgprogram.marketrates.bitbay.MarketRateData;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -63,8 +63,8 @@ public class MarketRateUpdateTaskSpec extends Specification {
         );
     }
 
-    private MarketRate candlestickChartData(Date date) {
-        return new MarketRate(
+    private MarketRateData candlestickChartData(Date date) {
+        return new MarketRateData(
                 "BTC-PLN",
                 date,
                 25045.87,
@@ -74,12 +74,12 @@ public class MarketRateUpdateTaskSpec extends Specification {
                 0.22349329);
     }
 
-    private MarketRate candlestickChartDataNextHour(MarketRate data) {
+    private MarketRateData candlestickChartDataNextHour(MarketRateData data) {
         return candlestickChartData(
                 nextHour(data.getDate()));
     }
 
-    private Set<MarketRate> candlestickChartsSince(Date sinceDate, int count) {
+    private Set<MarketRateData> candlestickChartsSince(Date sinceDate, int count) {
         return Stream.iterate(candlestickChartData(sinceDate), this::candlestickChartDataNextHour)
                 .limit(count)
                 .collect(Collectors.toSet());

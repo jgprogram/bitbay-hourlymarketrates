@@ -1,40 +1,53 @@
 package com.jgprogram.marketrates.port.adapter.scheduler;
 
+import com.jgprogram.marketrates.application.MarketRateService;
 import com.jgprogram.marketrates.application.dto.MarketRateDTO;
-import com.jgprogram.marketrates.bitbay.MarketRate;
+import com.jgprogram.marketrates.bitbay.MarketRateData;
+import com.jgprogram.marketrates.bitbay.MarketRateDataService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 @Component
 public class MarketRateUpdateTask {
 
+    private static final Logger logger = LoggerFactory.getLogger(MarketRateUpdateTask.class);
     private static final Duration ONE_HOUR = Duration.ofHours(1);
 
-//    private final CandlestickChartAdapter candlestickChartAdapter;
-//    private final MarketRateService marketRateService;
-//
-//    @Autowired
-//    public MarketRateUpdateTask(MarketRateService marketRateService, CandlestickChartAdapter candlestickChartAdapter) {
-//        this.candlestickChartAdapter = candlestickChartAdapter;
-//        this.marketRateService = marketRateService;
-//    }
-//
-//    @Scheduled(fixedDelay = 1800000) //30 min
-//    public void loadLatest() {
-//        final Date latestRateDate = marketRateService.latestRateDate();
-//        if (durationSince(latestRateDate).compareTo(ONE_HOUR) > 0) {
-//            candlestickChartAdapter.getSince(latestRateDate)
-//                    .stream()
-//                    .map(this::mapToMarketRateDto)
-//                    .forEach(marketRateService::createMarketRate);
-//        }
-//    }
+    private final MarketRateService marketRateService;
+    private final MarketRateDataService marketRateDataService;
 
-    private MarketRateDTO mapToMarketRateDto(MarketRate source) {
+    @Autowired
+    public MarketRateUpdateTask(MarketRateService marketRateService, MarketRateDataService marketRateDataService) {
+        this.marketRateService = marketRateService;
+        this.marketRateDataService = marketRateDataService;
+    }
+
+    @Scheduled(fixedDelay = 1800000) //30 min
+    public void loadData() {
+        Date latestRateDate = marketRateService.getLatestMarketRate().getDate();
+        if(latestRateDate == null) {
+            latestRateDate = new Date(1388530800000L);
+        }
+
+        if (durationSince(latestRateDate).compareTo(ONE_HOUR) > 0) {
+            try {
+                marketRateDataService.loadDataFromOneYear(latestRateDate).get();
+            } catch (Exception e) {
+                logger.error("Error until loading data from market rate data service.", e);
+            }
+        }
+    }
+
+    private MarketRateDTO mapToMarketRateDto(MarketRateData source) {
         return new MarketRateDTO(
                 source.getCode(),
                 source.getDate(),

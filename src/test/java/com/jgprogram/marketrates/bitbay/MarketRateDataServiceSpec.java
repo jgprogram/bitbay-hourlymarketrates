@@ -98,14 +98,14 @@ public class MarketRateDataServiceSpec extends Specification {
     }
 
     private TradingTickerService mockTradingTickerService() throws Exception {
-        final CompletableFuture<List<Market>> markets = CompletableFuture.completedFuture(sampleMarkets());
+        final CompletableFuture<List<MarketData>> markets = CompletableFuture.completedFuture(sampleMarkets());
         TradingTickerService tradingTickerService = mock(TradingTickerService.class);
         when(tradingTickerService.getMarkets())
                 .thenReturn(markets);
         return tradingTickerService;
     }
 
-    private List<MarketRate> sampleMarketRates(String marketCode, Date since) {
+    private List<MarketRateData> sampleMarketRates(String marketCode, Date since) {
         final long limit = Duration.between(LocalDateTime.ofInstant(since.toInstant(), ZoneId.systemDefault()),
                 LocalDateTime.now())
                 .toHours() + 1;
@@ -117,8 +117,8 @@ public class MarketRateDataServiceSpec extends Specification {
                 .collect(Collectors.toList());
     }
 
-    private MarketRate sampleMarketRate(String marketCode, Date date) {
-        return new MarketRate(
+    private MarketRateData sampleMarketRate(String marketCode, Date date) {
+        return new MarketRateData(
                 marketCode,
                 date,
                 1545D,
@@ -128,9 +128,9 @@ public class MarketRateDataServiceSpec extends Specification {
                 0D);
     }
 
-    private List<Market> sampleMarkets() {
+    private List<MarketData> sampleMarkets() {
         return Arrays.asList(
-                new Market("BTC-USD"),
-                new Market("ZRX-EUR"));
+                new MarketData("BTC-USD"),
+                new MarketData("ZRX-EUR"));
     }
 }

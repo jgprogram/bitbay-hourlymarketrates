@@ -60,7 +60,7 @@ public class MarketRate extends DomainEntity {
     }
 
     private void setMarketCode(String marketCode) {
-        assertArgumentNotNull(marketCode, "Market code is required");
+        assertArgumentNotNull(marketCode, "MarketData code is required");
         this.marketCode = marketCode;
     }
 

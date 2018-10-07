@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-@Profile("inMemoryRepositories")
+//@Profile("inMemoryRepositories")
 public class InMemoryMarketRateDataCache implements MarketRateDataCache {
 
     private final List<MarketRateDataLoaded> rates = new ArrayList<>();

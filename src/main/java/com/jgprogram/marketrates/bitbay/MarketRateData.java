@@ -3,7 +3,7 @@ package com.jgprogram.marketrates.bitbay;
 import java.util.Date;
 import java.util.Objects;
 
-public class MarketRate {
+public class MarketRateData {
 
     private final String code;
     private final Date date;
@@ -13,7 +13,7 @@ public class MarketRate {
     private final Double l;
     private final Double v;
 
-    public MarketRate(String code, Date date, Double o, Double c, Double h, Double l, Double v) {
+    public MarketRateData(String code, Date date, Double o, Double c, Double h, Double l, Double v) {
         this.code = code;
         this.date = date;
         this.o = o;
@@ -55,7 +55,7 @@ public class MarketRate {
     public boolean equals(Object o1) {
         if (this == o1) return true;
         if (o1 == null || getClass() != o1.getClass()) return false;
-        MarketRate that = (MarketRate) o1;
+        MarketRateData that = (MarketRateData) o1;
         return Objects.equals(code, that.code) &&
                 Objects.equals(date, that.date) &&
                 Objects.equals(o, that.o) &&
