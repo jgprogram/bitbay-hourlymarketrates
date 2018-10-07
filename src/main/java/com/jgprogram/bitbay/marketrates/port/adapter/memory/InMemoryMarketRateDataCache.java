@@ -1,7 +1,7 @@
 package com.jgprogram.bitbay.marketrates.port.adapter.memory;
 
 import com.jgprogram.bitbay.marketrates.port.adapter.bitbay.MarketRateDataLoaded;
-import com.jgprogram.bitbay.marketrates.port.adapter.cache.MarketRateDataCache;
+import com.jgprogram.bitbay.marketrates.cache.MarketRateDataCache;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.jgprogram.bitbay.marketrates.port.adapter.cache;
+package com.jgprogram.bitbay.marketrates.cache;
 
 import com.jgprogram.bitbay.marketrates.port.adapter.bitbay.MarketRateDataLoaded;
 

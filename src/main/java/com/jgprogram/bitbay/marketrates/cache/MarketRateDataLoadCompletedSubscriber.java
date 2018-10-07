@@ -1,10 +1,11 @@
-package com.jgprogram.bitbay.marketrates.port.adapter.cache;
+package com.jgprogram.bitbay.marketrates.cache;
 
 import com.jgprogram.bitbay.marketrates.application.MarketRateService;
 import com.jgprogram.bitbay.marketrates.application.dto.MarketRateDTO;
 import com.jgprogram.bitbay.marketrates.event.EventSubscriber;
 import com.jgprogram.bitbay.marketrates.port.adapter.bitbay.MarketRateDataLoadCompleted;
 import com.jgprogram.bitbay.marketrates.port.adapter.bitbay.MarketRateDataLoaded;
+import com.jgprogram.bitbay.marketrates.cache.MarketRateDataCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

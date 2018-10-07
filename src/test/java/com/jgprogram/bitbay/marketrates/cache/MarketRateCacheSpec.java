@@ -1,8 +1,12 @@
-package com.jgprogram.bitbay.marketrates.port.adapter.cache;
+package com.jgprogram.bitbay.marketrates.cache;
 
+import com.jgprogram.bitbay.marketrates.cache.MarketRateDataLoadCompletedSubscriber;
 import com.jgprogram.bitbay.marketrates.Specification;
 import com.jgprogram.bitbay.marketrates.application.MarketRateService;
 import com.jgprogram.bitbay.marketrates.application.dto.MarketRateDTO;
+import com.jgprogram.bitbay.marketrates.cache.MarketRateDataCache;
+import com.jgprogram.bitbay.marketrates.cache.MarketRateDataLoadErrorOccurredSubscriber;
+import com.jgprogram.bitbay.marketrates.cache.MarketRateDataLoadedSubscriber;
 import com.jgprogram.bitbay.marketrates.port.adapter.bitbay.MarketRateDataLoadCompleted;
 import com.jgprogram.bitbay.marketrates.port.adapter.bitbay.MarketRateDataLoadErrorOccurred;
 import com.jgprogram.bitbay.marketrates.port.adapter.bitbay.MarketRateDataLoaded;
