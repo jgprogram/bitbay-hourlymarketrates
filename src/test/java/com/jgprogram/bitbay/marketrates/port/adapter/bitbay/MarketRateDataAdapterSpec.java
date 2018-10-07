@@ -22,7 +22,7 @@ public class MarketRateDataAdapterSpec extends Specification {
 //        MarketRateDataAdapter marketRateDataAdapter =
 //                new MarketRateDataAdapter(tradingTickerService, tradingCandlestickService);
 //
-//        marketRateDataAdapter.loadDataSince(previousFullHour(now))
+//        marketRateDataAdapter.loadDataSince(previousHour(now))
 //                .get();
 //
 //        verify(tradingTickerService, times(1))
@@ -39,7 +39,7 @@ public class MarketRateDataAdapterSpec extends Specification {
 //        MarketRateDataAdapter marketRateDataAdapter =
 //                new MarketRateDataAdapter(tradingTickerService, tradingCandlestickService);
 //
-//        marketRateDataAdapter.loadDataSince(previousFullHour(now))
+//        marketRateDataAdapter.loadDataSince(previousHour(now))
 //                .get();
 //
 //        verify(tradingCandlestickService, times(1))

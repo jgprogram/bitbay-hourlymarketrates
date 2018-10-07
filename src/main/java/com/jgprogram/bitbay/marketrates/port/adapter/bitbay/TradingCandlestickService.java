@@ -1,17 +1,12 @@
 package com.jgprogram.bitbay.marketrates.port.adapter.bitbay;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.jgprogram.common.port.adapter.RestClientService;
-import com.jgprogram.common.util.Time;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.jgprogram.common.util.TimeFullUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.env.Environment;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +33,7 @@ class TradingCandlestickService extends BBRestClientService {
                 marketCode,
                 Resolution.ONE_HOUR.value(),
                 since.toInstant().getEpochSecond(),
-                Time.oneYearLater(since).toInstant().getEpochSecond());
+                TimeFullUnit.oneYearLater(since).toInstant().getEpochSecond());
 
         List<MarketRate> marketRates = mapToMarketRates(marketCode, getItemsNode(url));
 

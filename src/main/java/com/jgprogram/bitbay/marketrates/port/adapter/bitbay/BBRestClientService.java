@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import static com.jgprogram.common.util.Time.milisToNextFullMinute;
+import static com.jgprogram.common.util.TimeFullUnit.millisToNextMinute;
 
 abstract class BBRestClientService extends RestClientService {
 
@@ -38,7 +38,7 @@ abstract class BBRestClientService extends RestClientService {
                         if (errorStatus == ErrorStatus.ACTION_LIMIT_EXCEEDED
                                 && reconnectAttempts.get() < LIMIT_OF_RECONNECT_ATTEMPTS) {
                             reconnectAttempts.set(reconnectAttempts.get() + 1);
-                            Thread.sleep(milisToNextFullMinute());
+                            Thread.sleep(millisToNextMinute());
 
                             return getItemsNode(url);
                         } else {

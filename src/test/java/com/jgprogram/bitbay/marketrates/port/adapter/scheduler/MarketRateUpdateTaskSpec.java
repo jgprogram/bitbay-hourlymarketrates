@@ -10,19 +10,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.jgprogram.common.util.Time.*;
+import static com.jgprogram.common.util.TimeFullUnit.*;
 
 public class MarketRateUpdateTaskSpec extends Specification {
 
 //    @Test
 //    public void when_last_rate_is_older_than_1_hour_should_ask_BitBay_CandlestickChartAdapter_for_new_data() {
-//        final Date previousFullHour = previousFullHour(new Date());
+//        final Date previousHour = previousHour(new Date());
 //        CandlestickChartAdapter candlestickChartAdapter = mock(CandlestickChartAdapter.class);
-//        when(candlestickChartAdapter.getSince(previousFullHour))
-//                .thenReturn(candlestickChartsSince(previousFullHour, 1));
+//        when(candlestickChartAdapter.getSince(previousHour))
+//                .thenReturn(candlestickChartsSince(previousHour, 1));
 //        MarketRateService marketRateService = mock(MarketRateService.class);
 //        when(marketRateService.latestRateDate())
-//                .thenReturn(previousFullHour);
+//                .thenReturn(previousHour);
 //        MarketRateUpdateTask marketRateUpdateTask = new MarketRateUpdateTask(marketRateService, candlestickChartAdapter);
 //
 //        marketRateUpdateTask.loadLatest();
@@ -30,7 +30,7 @@ public class MarketRateUpdateTaskSpec extends Specification {
 //        verify(marketRateService, times(1))
 //                .latestRateDate();
 //        verify(candlestickChartAdapter, times(1))
-//                .getSince(previousFullHour);
+//                .getSince(previousHour);
 //        verify(marketRateService, times(1))
 //                .createMarketRate(any(MarketRateDTO.class));
 //
@@ -38,11 +38,11 @@ public class MarketRateUpdateTaskSpec extends Specification {
 //
 //    @Test
 //    public void when_last_rate_is_not_older_than_1_hour_it_should_not_ask_BitBay_CandlestickChartAdapter_for_new_data() {
-//        final Date currentFullHour = currentFullHour();
+//        final Date currentHour = currentHour();
 //        CandlestickChartAdapter candlestickChartAdapter = mock(CandlestickChartAdapter.class);
 //        MarketRateService marketRateService = mock(MarketRateService.class);
 //        when(marketRateService.latestRateDate())
-//                .thenReturn(currentFullHour);
+//                .thenReturn(currentHour);
 //        MarketRateUpdateTask marketRateUpdateTask = new MarketRateUpdateTask(marketRateService, candlestickChartAdapter);
 //
 //        marketRateUpdateTask.loadLatest();
@@ -76,7 +76,7 @@ public class MarketRateUpdateTaskSpec extends Specification {
 
     private MarketRate candlestickChartDataNextHour(MarketRate data) {
         return candlestickChartData(
-                nextFullHour(data.getDate()));
+                nextHour(data.getDate()));
     }
 
     private Set<MarketRate> candlestickChartsSince(Date sinceDate, int count) {

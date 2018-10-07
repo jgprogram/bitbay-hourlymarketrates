@@ -6,13 +6,18 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-public class Time {
-
-    public static Date now() {
-        return new Date();
+public class TimeFullUnit {
+    public static Date toFullHour(Date date) {
+        return Date.from(
+                LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault())
+                        .withMinute(0)
+                        .withSecond(0)
+                        .withNano(0)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant());
     }
 
-    public static Date currentFullHour() {
+    public static Date currentHour() {
         return Date.from(
                 LocalDateTime.now()
                         .withMinute(0)
@@ -23,7 +28,7 @@ public class Time {
 
     }
 
-    public static Date previousFullHour(Date current) {
+    public static Date previousHour(Date current) {
         return Date.from(
                 LocalDateTime.ofInstant(current.toInstant(), ZoneId.systemDefault())
                         .withMinute(0)
@@ -35,7 +40,7 @@ public class Time {
 
     }
 
-    public static Date nextFullHour(Date current) {
+    public static Date nextHour(Date current) {
         return Date.from(
                 LocalDateTime.ofInstant(current.toInstant(), ZoneId.systemDefault())
                         .withMinute(0)
@@ -47,7 +52,7 @@ public class Time {
 
     }
 
-    public static Date nextFullMinute(Date current) {
+    public static Date nextMinute(Date current) {
         return Date.from(
                 LocalDateTime.ofInstant(current.toInstant(), ZoneId.systemDefault())
                         .withSecond(0)
@@ -59,9 +64,12 @@ public class Time {
     }
 
     public static Date oneYearLater(Date since) {
-        LocalDateTime nowDate = LocalDateTime.now();
+        LocalDateTime nowDate = LocalDateTime.now()
+                .withMinute(0)
+                .withSecond(0)
+                .withNano(0);
         LocalDateTime sinceDate
-                = LocalDateTime.ofInstant(since.toInstant(), ZoneId.systemDefault());
+                = LocalDateTime.ofInstant(toFullHour(since).toInstant(), ZoneId.systemDefault());
 
         if (Duration.between(sinceDate, nowDate).compareTo(Duration.ofDays(365)) > 0) {
             return Date.from(sinceDate.plusYears(1)
@@ -74,7 +82,7 @@ public class Time {
         }
     }
 
-    public static long milisToNextFullMinute() {
+    public static long millisToNextMinute() {
         LocalDateTime nowDate = LocalDateTime.now();
         LocalDateTime nextFullMinute = nowDate
                 .withSecond(0)

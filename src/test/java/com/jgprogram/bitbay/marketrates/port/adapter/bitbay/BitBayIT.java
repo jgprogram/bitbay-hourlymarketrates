@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static com.jgprogram.common.util.Time.*;
+import static com.jgprogram.common.util.TimeFullUnit.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -25,8 +25,8 @@ public class BitBayIT extends IntegrationTestCase {
     TradingTickerService tradingTickerService;
 
     @Test
-    public void should_get_market_rate_from_previous_hour() throws Exception {
-        final Date previousFullHour = previousFullHour(now());
+    public void should_get_rates_from_market_since_previous_hour() throws Exception {
+        final Date previousFullHour = previousHour(currentHour());
         List<Market> markets = tradingTickerService.getMarkets().get();
         assertNotNull(markets);
         assertThat(markets, is(not(empty())));
@@ -50,8 +50,9 @@ public class BitBayIT extends IntegrationTestCase {
     }
 
     @Test
-    public void should_get_all_market_rates() throws Exception {
-        final Date previousFullHour = previousFullHour(now());
+    public void should_get_hourly_rates_from_all_available_market_since_previous_full_hour_to_current_full_hour() throws Exception {
+        final Date previousFullHour = previousHour(currentHour());
+        final Date currentFullHour = currentHour();
 
         List<Market> markets = tradingTickerService.getMarkets().get();
         assertNotNull(markets);
@@ -68,8 +69,35 @@ public class BitBayIT extends IntegrationTestCase {
         for (CompletableFuture<List<MarketRate>> request : marketRateRequests) {
             List<MarketRate> marketRates = request.get();
             marketRatesRequestCompleted++;
+
+            assertNotNull(marketRates);
+            assertThat(marketRates, is(not(empty())));
+            assertTrue(marketRates.get(0).getDate().equals(previousFullHour));
+            if(marketRates.size() == 2) { //Rates from current full hour could be not available yet.
+                assertTrue(marketRates.get(1).getDate().equals(currentFullHour));
+            }
         }
 
         assertThat(markets.size(), is(marketRatesRequestCompleted));
+    }
+
+    @Test
+    public void should_get_6856_BTC_USD_rates_from_2017() throws Exception {
+        final Date date_2017_01_01_0000 = new Date(1483225200000L);
+        final Date oneYearLater = oneYearLater(date_2017_01_01_0000);
+        final int availableRatesIn2017 = 6856;
+        String marketCode = "BTC-USD";
+
+        List<MarketRate> marketRates = tradingCandlestickService
+                .getHourlyMarketRatesSince(marketCode, date_2017_01_01_0000).get();
+        assertNotNull(marketRates);
+        assertThat(marketRates, hasSize(availableRatesIn2017));
+
+        MarketRate firstMarketRate = marketRates.get(0);
+        assertThat(firstMarketRate.getCode(), is(marketCode));
+        assertThat(firstMarketRate.getDate(), is(date_2017_01_01_0000));
+        MarketRate lastMarketRate = marketRates.get(availableRatesIn2017 - 1);
+        assertThat(lastMarketRate.getCode(), is(marketCode));
+        assertThat(lastMarketRate.getDate(), is(oneYearLater));
     }
 }

@@ -13,7 +13,7 @@ import org.mockito.ArgumentCaptor;
 import java.util.Arrays;
 import java.util.UUID;
 
-import static com.jgprogram.common.util.Time.*;
+import static com.jgprogram.common.util.TimeFullUnit.*;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -90,7 +90,7 @@ public class MarketRateCacheSpec extends Specification {
         return new MarketRateDataLoaded(
                 requestId,
                 "BTC-PLN",
-                currentFullHour(),
+                currentHour(),
                 51280D,
                 50400D,
                 51280D,
