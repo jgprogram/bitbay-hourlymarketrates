@@ -19,7 +19,7 @@ public class MarketRateSpec {
 
     @Test
     public void should_create_new_market_rate() {
-        MarketRateDTO marketRateDTO = marketRateDTO();
+        MarketRateDTO marketRateDTO = marketRateDTO("BTC-PLN", new Date(1538352000000L));
         MarketRate expectedMarketRate = marketRateFromDTO(marketRateDTO);
         MarketRateRepository marketRateRepository = mock(MarketRateRepository.class);
         MarketRateService service = new MarketRateService(marketRateRepository);
@@ -28,7 +28,7 @@ public class MarketRateSpec {
 
         verify(marketRateRepository, times(1))
                 .add(any(MarketRate.class));
-        assertThat(expectedMarketRate.code(), is(marketRateDTO.getCode()));
+        assertThat(expectedMarketRate.marketCode(), is(marketRateDTO.getMarketCode()));
         assertThat(expectedMarketRate.date(), is(marketRateDTO.getDate()));
         assertThat(expectedMarketRate.open(), is(BigDecimal.valueOf(marketRateDTO.getOpen())));
         assertThat(expectedMarketRate.close(), is(BigDecimal.valueOf(marketRateDTO.getClose())));
@@ -55,9 +55,24 @@ public class MarketRateSpec {
         assertThat(latestMarketRateDTO.getDate(), is(lastDate));
     }
 
+    @Test
+    public void should_reject_new_market_rate_if_already_exits_rate_with_same_market_code_and_date() {
+        Date date = TimeFullUnit.currentHour();
+        String marketCode = "BTC-PLN";
+        MarketRateRepository marketRateRepository = mock(MarketRateRepository.class);
+        when(marketRateRepository.findByMarketCodeAndDate(marketCode, date))
+                .thenReturn(marketRate(marketCode, date));
+        MarketRateService service = new MarketRateService(marketRateRepository);
+
+        service.createMarketRate(marketRateDTO(marketCode, date));
+
+        verify(marketRateRepository, times(0))
+                .add(any(MarketRate.class));
+    }
+
     private MarketRate marketRateFromDTO(MarketRateDTO marketRateDTO) {
         return new MarketRate(
-                marketRateDTO.getCode(),
+                marketRateDTO.getMarketCode(),
                 marketRateDTO.getDate(),
                 marketRateDTO.getOpen(),
                 marketRateDTO.getClose(),
@@ -66,13 +81,19 @@ public class MarketRateSpec {
         );
     }
 
-    private MarketRateDTO marketRateDTO() {
-        String code = "BTC-PLN";
-        Date date = new Date(1538352000000L);
+    private MarketRateDTO marketRateDTO(String marketCode, Date date) {
         Double open = 51280D;
         Double close = 50400D;
         Double highest = 51280D;
         Double lowest = 50200D;
-        return new MarketRateDTO(code, date, open, close, highest, lowest);
+        return new MarketRateDTO(marketCode, date, open, close, highest, lowest);
+    }
+
+    private MarketRate marketRate(String marketCode, Date date) {
+        Double open = 51280D;
+        Double close = 50400D;
+        Double highest = 51280D;
+        Double lowest = 50200D;
+        return new MarketRate(marketCode, date, open, close, highest, lowest);
     }
 }

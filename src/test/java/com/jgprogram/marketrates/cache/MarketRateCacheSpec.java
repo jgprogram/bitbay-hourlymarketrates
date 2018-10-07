@@ -67,7 +67,7 @@ public class MarketRateCacheSpec extends Specification {
                 .createMarketRate(marketRateDTOCaptor.capture());
         final MarketRateDTO expectedMarketRateDTO = marketRateDTOCaptor.getValue();
         assertThat(expectedMarketRateDTO.getClose(), is(expectedMarketRateDataLoaded.close()));
-        assertThat(expectedMarketRateDTO.getCode(), is(expectedMarketRateDataLoaded.code()));
+        assertThat(expectedMarketRateDTO.getMarketCode(), is(expectedMarketRateDataLoaded.code()));
         assertThat(expectedMarketRateDTO.getDate(), is(expectedMarketRateDataLoaded.date()));
         assertThat(expectedMarketRateDTO.getHighest(), is(expectedMarketRateDataLoaded.highest()));
         assertThat(expectedMarketRateDTO.getLowest(), is(expectedMarketRateDataLoaded.lowest()));

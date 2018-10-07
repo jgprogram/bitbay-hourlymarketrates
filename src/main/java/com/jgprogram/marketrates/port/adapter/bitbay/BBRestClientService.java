@@ -53,7 +53,7 @@ abstract class BBRestClientService extends RestClientService {
 
             return findNode("items", rootNode);
         } else {
-            throw new Exception("Bad status code " + responseEntity.getStatusCode());
+            throw new Exception("Bad status marketCode " + responseEntity.getStatusCode());
         }
     }
 

@@ -7,7 +7,7 @@ import java.math.RoundingMode;
 import java.util.Date;
 
 public class MarketRate extends DomainEntity {
-    private String code;
+    private String marketCode;
     private Date date;
     private BigDecimal open;
     private BigDecimal close;
@@ -15,8 +15,8 @@ public class MarketRate extends DomainEntity {
     private BigDecimal lowest;
     private BigDecimal average;
 
-    public MarketRate(String code, Date date, Double open, Double close, Double highest, Double lowest) {
-        setCode(code);
+    public MarketRate(String marketCode, Date date, Double open, Double close, Double highest, Double lowest) {
+        setMarketCode(marketCode);
         setDate(date);
         setOpen(open);
         setClose(close);
@@ -25,8 +25,8 @@ public class MarketRate extends DomainEntity {
         calculateAverage();
     }
 
-    public String code() {
-        return code;
+    public String marketCode() {
+        return marketCode;
     }
 
     public Date date() {
@@ -59,9 +59,9 @@ public class MarketRate extends DomainEntity {
                 .divide(BigDecimal.valueOf(2), RoundingMode.HALF_UP);
     }
 
-    private void setCode(String code) {
-        assertArgumentNotNull(code, "Code is required");
-        this.code = code;
+    private void setMarketCode(String marketCode) {
+        assertArgumentNotNull(marketCode, "Market code is required");
+        this.marketCode = marketCode;
     }
 
     private void setDate(Date date) {

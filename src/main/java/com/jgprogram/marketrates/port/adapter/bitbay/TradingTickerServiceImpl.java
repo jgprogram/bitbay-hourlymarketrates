@@ -44,7 +44,7 @@ class TradingTickerServiceImpl extends BBRestClientService implements TradingTic
             JsonNode itemNode = itemsIter.next().getValue();
             JsonNode marketNode = findNode("market", itemNode);
 
-            JsonNode marketCodeNode = findNode("code", marketNode);
+            JsonNode marketCodeNode = findNode("marketCode", marketNode);
             markets.add(new Market(marketCodeNode.asText()));
         }
 

@@ -3,15 +3,15 @@ package com.jgprogram.marketrates.application.dto;
 import java.util.Date;
 
 public class MarketRateDTO {
-    private final String code;
+    private final String marketCode;
     private final Date date;
     private final Double open;
     private final Double close;
     private final Double highest;
     private final Double lowest;
 
-    public MarketRateDTO(String code, Date date, Double open, Double close, Double highest, Double lowest) {
-        this.code = code;
+    public MarketRateDTO(String marketCode, Date date, Double open, Double close, Double highest, Double lowest) {
+        this.marketCode = marketCode;
         this.date = date;
         this.open = open;
         this.close = close;
@@ -19,8 +19,8 @@ public class MarketRateDTO {
         this.lowest = lowest;
     }
 
-    public String getCode() {
-        return code;
+    public String getMarketCode() {
+        return marketCode;
     }
 
     public Date getDate() {

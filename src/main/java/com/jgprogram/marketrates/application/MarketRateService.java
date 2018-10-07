@@ -18,8 +18,16 @@ public class MarketRateService {
     }
 
     public void createMarketRate(MarketRateDTO marketRateDTO) {
+        MarketRate existing = marketRateRepository.findByMarketCodeAndDate(
+                marketRateDTO.getMarketCode(),
+                marketRateDTO.getDate());
+
+        if(existing != null) {
+            return;
+        }
+
         MarketRate marketRate = new MarketRate(
-                marketRateDTO.getCode(),
+                marketRateDTO.getMarketCode(),
                 marketRateDTO.getDate(),
                 marketRateDTO.getOpen(),
                 marketRateDTO.getClose(),
