@@ -1,8 +1,10 @@
 package com.jgprogram.bitbay.marketrates.application;
 
+import com.jgprogram.bitbay.marketrates.application.dto.LatestMarketRateDTO;
 import com.jgprogram.bitbay.marketrates.application.dto.MarketRateDTO;
 import com.jgprogram.bitbay.marketrates.domain.model.MarketRate;
 import com.jgprogram.bitbay.marketrates.domain.model.MarketRateRepository;
+import com.jgprogram.common.util.TimeFullUnit;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -16,7 +18,7 @@ import static org.mockito.Mockito.*;
 public class MarketRateSpec {
 
     @Test
-    public void shouldCreateNewMarketRate() {
+    public void should_create_new_market_rate() {
         MarketRateDTO marketRateDTO = marketRateDTO();
         MarketRate expectedMarketRate = marketRateFromDTO(marketRateDTO);
         MarketRateRepository marketRateRepository = mock(MarketRateRepository.class);
@@ -38,6 +40,19 @@ public class MarketRateSpec {
                                 .add(expectedMarketRate.close())
                                 .divide(BigDecimal.valueOf(2), ROUND_HALF_UP)
                 ));
+    }
+
+    @Test
+    public void should_get_latest_market_date() {
+        Date lastDate = TimeFullUnit.previousHour(TimeFullUnit.currentHour());
+        MarketRateRepository marketRateRepository = mock(MarketRateRepository.class);
+        when(marketRateRepository.findLatestDate())
+                .thenReturn(lastDate);
+        MarketRateService service = new MarketRateService(marketRateRepository);
+
+        LatestMarketRateDTO latestMarketRateDTO = service.getLatestMarketRate();
+
+        assertThat(latestMarketRateDTO.getDate(), is(lastDate));
     }
 
     private MarketRate marketRateFromDTO(MarketRateDTO marketRateDTO) {

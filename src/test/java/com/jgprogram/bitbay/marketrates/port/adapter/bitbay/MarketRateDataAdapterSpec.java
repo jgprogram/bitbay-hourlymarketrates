@@ -26,14 +26,15 @@ public class MarketRateDataAdapterSpec extends Specification {
 
     @Test
     public void should_load_market_rates_from_bitbay_since_last_hour_and_publish_events_loaded_and_completed() throws Exception {
-        final Date previousHour = previousHour(currentHour());
+        final Date now = currentHour();
+        final Date previousHour = previousHour(now);
         TradingTickerService tradingTickerService = mockTradingTickerService();
-        TradingCandlestickService tradingCandlestickService = mockTradingCandlestickService(previousHour);
+        TradingCandlestickService tradingCandlestickService = mockTradingCandlestickService(previousHour, now);
         MarketRateDataAdapter adapter = new MarketRateDataAdapter(tradingTickerService, tradingCandlestickService);
         MarketRateDataLoadedSubscriber dataLoadedSubscriber = marketRateDataLoadedSubscriber();
         MarketRateDataLoadCompletedSubscriber dataLoadCompletedSubscriber = marketRateDataLoadCompletedSubscriber();
 
-        adapter.loadDataSince(previousHour);
+        adapter.loadDataFromOneYear(previousHour);
 
         verify(dataLoadedSubscriber, times(4))
                 .handleEvent(any(MarketRateDataLoaded.class));
@@ -43,13 +44,14 @@ public class MarketRateDataAdapterSpec extends Specification {
 
     @Test
     public void when_error_occurs_should_receive_notification_about_that() throws Exception {
-        final Date previousHour = previousHour(currentHour());
+        final Date now = currentHour();
+        final Date previousHour = previousHour(now);
         TradingTickerService tradingTickerService = mockTradingTickerService();
-        TradingCandlestickService tradingCandlestickService = mockTradingCandlestickServiceWithException(previousHour);
+        TradingCandlestickService tradingCandlestickService = mockTradingCandlestickServiceWithException(previousHour, now);
         MarketRateDataAdapter adapter = new MarketRateDataAdapter(tradingTickerService, tradingCandlestickService);
         MarketRateDataLoadErrorOccurredSubscriber errorSubscriber = marketRateDataLoadErrorOccurredSubscriber();
 
-        adapter.loadDataSince(previousHour);
+        adapter.loadDataFromOneYear(previousHour);
 
         verify(errorSubscriber, times(1))
                 .handleEvent(any(MarketRateDataLoadErrorOccurred.class));
@@ -77,20 +79,20 @@ public class MarketRateDataAdapterSpec extends Specification {
         return s;
     }
 
-    private TradingCandlestickService mockTradingCandlestickService(Date since) throws Exception {
+    private TradingCandlestickService mockTradingCandlestickService(Date since, Date to) throws Exception {
         TradingCandlestickService tradingCandlestickService = mock(TradingCandlestickService.class);
-        when(tradingCandlestickService.getHourlyMarketRatesSince("BTC-USD", since))
+        when(tradingCandlestickService.getHourlyMarketRatesSince("BTC-USD", since, to))
                 .thenReturn(CompletableFuture.completedFuture(sampleMarketRates("BTC-USD", since)));
-        when(tradingCandlestickService.getHourlyMarketRatesSince("ZRX-EUR", since))
+        when(tradingCandlestickService.getHourlyMarketRatesSince("ZRX-EUR", since, to))
                 .thenReturn(CompletableFuture.completedFuture(sampleMarketRates("ZRX-EUR", since)));
         return tradingCandlestickService;
     }
 
-    private TradingCandlestickService mockTradingCandlestickServiceWithException(Date since) throws Exception {
+    private TradingCandlestickService mockTradingCandlestickServiceWithException(Date since, Date to) throws Exception {
         TradingCandlestickService tradingCandlestickService = mock(TradingCandlestickService.class);
-        when(tradingCandlestickService.getHourlyMarketRatesSince("BTC-USD", since))
+        when(tradingCandlestickService.getHourlyMarketRatesSince("BTC-USD", since, to))
                 .thenReturn(CompletableFuture.completedFuture(sampleMarketRates("BTC-USD", since)));
-        when(tradingCandlestickService.getHourlyMarketRatesSince("ZRX-EUR", since))
+        when(tradingCandlestickService.getHourlyMarketRatesSince("ZRX-EUR", since, to))
                 .thenThrow(Exception.class);
         return tradingCandlestickService;
     }

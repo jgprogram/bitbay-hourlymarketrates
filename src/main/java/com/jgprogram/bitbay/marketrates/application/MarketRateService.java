@@ -1,12 +1,11 @@
 package com.jgprogram.bitbay.marketrates.application;
 
+import com.jgprogram.bitbay.marketrates.application.dto.LatestMarketRateDTO;
 import com.jgprogram.bitbay.marketrates.application.dto.MarketRateDTO;
 import com.jgprogram.bitbay.marketrates.domain.model.MarketRate;
 import com.jgprogram.bitbay.marketrates.domain.model.MarketRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 @Service
 public class MarketRateService {
@@ -31,7 +30,8 @@ public class MarketRateService {
         marketRateRepository.add(marketRate);
     }
 
-    public Date latestRateDate() {
-        throw new UnsupportedOperationException("Unimplemented yet.");
+    public LatestMarketRateDTO getLatestMarketRate() {
+        return new LatestMarketRateDTO(
+                marketRateRepository.findLatestDate());
     }
 }

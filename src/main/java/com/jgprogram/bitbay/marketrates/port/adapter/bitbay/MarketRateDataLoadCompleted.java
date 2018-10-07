@@ -9,11 +9,13 @@ public class MarketRateDataLoadCompleted implements Event {
     private final String requestId;
     private final Date occurredOn;
     private final Date dataSince;
+    private final Date dataTo;
 
-    public MarketRateDataLoadCompleted(String requestId, Date since) {
+    public MarketRateDataLoadCompleted(String requestId, Date since, Date to) {
         this.requestId = requestId;
         this.occurredOn = new Date();
         this.dataSince = since;
+        this.dataTo = to;
     }
 
     public String requestId() {
@@ -27,5 +29,9 @@ public class MarketRateDataLoadCompleted implements Event {
 
     public Date dataSince() {
         return dataSince;
+    }
+
+    public Date dataTo() {
+        return dataTo;
     }
 }

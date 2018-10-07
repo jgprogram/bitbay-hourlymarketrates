@@ -1,6 +1,7 @@
 package com.jgprogram.bitbay.marketrates.port.adapter.bitbay;
 
 import com.jgprogram.bitbay.marketrates.event.EventBus;
+import com.jgprogram.common.util.TimeFullUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,21 +30,22 @@ public class MarketRateDataAdapter {
     }
 
     @Async
-    public CompletableFuture<Void> loadDataSince(Date since) {
+    public CompletableFuture<Void> loadDataFromOneYear(Date since) {
+        final Date to = TimeFullUnit.oneYearLater(since);
         final String requestId = UUID.randomUUID().toString();
         logger.info("New market rate data request " + requestId + " was created.");
 
         try {
             List<Market> markets = tradingTickerService.getMarkets().get(60, TimeUnit.SECONDS);
 
-            List<CompletableFuture<List<MarketRate>>> futuresOfMarketRates = loadMarketsRates(markets, since);
+            List<CompletableFuture<List<MarketRate>>> futuresOfMarketRates = loadMarketsRates(markets, since, to);
             for (CompletableFuture<List<MarketRate>> future : futuresOfMarketRates) {
                 List<MarketRate> marketRates = future.get();
                 marketRates.forEach(mr -> publishLoadedEvent(requestId, mr));
             }
 
             EventBus.instance()
-                    .publish(new MarketRateDataLoadCompleted(requestId, since));
+                    .publish(new MarketRateDataLoadCompleted(requestId, since, to));
             logger.info(requestId + " - completed.");
         } catch (Exception e) {
             EventBus.instance()
@@ -54,10 +56,10 @@ public class MarketRateDataAdapter {
         }
     }
 
-    private List<CompletableFuture<List<MarketRate>>> loadMarketsRates(List<Market> markets, Date since) throws Exception {
+    private List<CompletableFuture<List<MarketRate>>> loadMarketsRates(List<Market> markets, Date since, Date to) throws Exception {
         List<CompletableFuture<List<MarketRate>>> futures = new ArrayList<>(markets.size());
         for (Market m : markets) {
-            futures.add(tradingCandlestickService.getHourlyMarketRatesSince(m.getCode(), since));
+            futures.add(tradingCandlestickService.getHourlyMarketRatesSince(m.getCode(), since, to));
         }
 
         return futures;

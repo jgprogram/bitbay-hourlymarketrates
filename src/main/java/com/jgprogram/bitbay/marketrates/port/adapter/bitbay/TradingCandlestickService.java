@@ -27,13 +27,13 @@ class TradingCandlestickService extends BBRestClientService {
     }
 
     @Async(value = "bibayThreadPool")
-    public CompletableFuture<List<MarketRate>> getHourlyMarketRatesSince(String marketCode, Date since) throws Exception {
+    public CompletableFuture<List<MarketRate>> getHourlyMarketRatesSince(String marketCode, Date since, Date to) throws Exception {
         final String url = String.format(
                 env.getProperty("bitbay.api.url") + RESOURCE_PATH,
                 marketCode,
                 Resolution.ONE_HOUR.value(),
                 since.toInstant().getEpochSecond(),
-                TimeFullUnit.oneYearLater(since).toInstant().getEpochSecond());
+                to.toInstant().getEpochSecond());
 
         List<MarketRate> marketRates = mapToMarketRates(marketCode, getItemsNode(url));
 

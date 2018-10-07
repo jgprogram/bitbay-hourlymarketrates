@@ -16,7 +16,6 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 
 public class BitBayIT extends IntegrationTestCase {
-    private static final Logger logger = LoggerFactory.getLogger(MarketRateDataAdapter.class);
 
     @Autowired
     TradingCandlestickService tradingCandlestickService;
@@ -26,7 +25,8 @@ public class BitBayIT extends IntegrationTestCase {
 
     @Test
     public void should_get_rates_from_market_since_previous_hour() throws Exception {
-        final Date previousFullHour = previousHour(currentHour());
+        final Date now = currentHour();
+        final Date previousFullHour = previousHour(now);
         List<Market> markets = tradingTickerService.getMarkets().get();
         assertNotNull(markets);
         assertThat(markets, is(not(empty())));
@@ -35,7 +35,7 @@ public class BitBayIT extends IntegrationTestCase {
         assertThat(market.getCode(), not(isEmptyOrNullString()));
 
         List<MarketRate> marketRates = tradingCandlestickService
-                .getHourlyMarketRatesSince(market.getCode(), previousFullHour).get();
+                .getHourlyMarketRatesSince(market.getCode(), previousFullHour, now).get();
         assertNotNull(marketRates);
         assertThat(marketRates, is(not(empty())));
 
@@ -61,7 +61,7 @@ public class BitBayIT extends IntegrationTestCase {
         List<CompletableFuture<List<MarketRate>>> marketRateRequests = new ArrayList<>(markets.size());
         for (Market market : markets) {
             CompletableFuture<List<MarketRate>> task = tradingCandlestickService
-                    .getHourlyMarketRatesSince(market.getCode(), previousFullHour);
+                    .getHourlyMarketRatesSince(market.getCode(), previousFullHour, currentFullHour);
             marketRateRequests.add(task);
         }
 
@@ -89,7 +89,7 @@ public class BitBayIT extends IntegrationTestCase {
         String marketCode = "BTC-USD";
 
         List<MarketRate> marketRates = tradingCandlestickService
-                .getHourlyMarketRatesSince(marketCode, date_2017_01_01_0000).get();
+                .getHourlyMarketRatesSince(marketCode, date_2017_01_01_0000, oneYearLater).get();
         assertNotNull(marketRates);
         assertThat(marketRates, hasSize(availableRatesIn2017));
 
