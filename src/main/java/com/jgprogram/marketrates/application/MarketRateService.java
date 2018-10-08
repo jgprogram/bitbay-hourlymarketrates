@@ -10,11 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 public class MarketRateService {
@@ -52,7 +48,6 @@ public class MarketRateService {
                 marketRateRepository.findLatestDate());
     }
 
-    //TODO optimisations
     public HourlyMarketRatesDTO getMarketRatesHourly(final String marketCode, final Date day, Integer[] hours) {
         if (StringUtils.isEmpty(marketCode)) {
             throw new IllegalArgumentException("A market code is required.");
@@ -66,27 +61,12 @@ public class MarketRateService {
             throw new IllegalArgumentException("At least one hour is required.");
         }
 
-        List<HourlyMarketRatesDTO.HourRateDTO> hourlyRates = new ArrayList<>(hours.length);
-        Arrays.stream(hours)
-                .collect(Collectors.toMap(
-                        Function.identity(),
-                        h -> marketRateRepository.findByMarketCodeAndDate(marketCode, concatDayHour(day, h))
-                ))
-                .forEach((hour, marketRate) -> hourlyRates.add(
-                        new HourlyMarketRatesDTO.HourRateDTO(hour, marketRate.average().doubleValue())));
-
-        List<HourlyMarketRatesDTO.HourRateDTO> sortedHourlyRates = hourlyRates.stream()
+        List<HourlyMarketRatesDTO.HourRateDTO> sortedHourlyRates = Arrays.stream(hours)
+                .map(h -> marketRateRepository.findByMarketCodeAndDayAndHour(marketCode, day, h))
+                .map(mr -> new HourlyMarketRatesDTO.HourRateDTO(mr.hour(), mr.average().doubleValue()))
                 .sorted(Comparator.comparing(HourlyMarketRatesDTO.HourRateDTO::getHour))
                 .collect(ImmutableList.toImmutableList());
 
         return new HourlyMarketRatesDTO(day, sortedHourlyRates);
-    }
-
-    private Date concatDayHour(Date day, Integer hour) {
-        return Date.from(
-                LocalDateTime.ofInstant(day.toInstant(), ZoneId.systemDefault())
-                        .withHour(hour)
-                        .atZone(ZoneId.systemDefault())
-                        .toInstant());
     }
 }

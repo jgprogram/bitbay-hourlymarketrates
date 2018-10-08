@@ -23,7 +23,7 @@ public class InMemoryMarketRateRepository implements MarketRateRepository {
 
     @Override
     public Date findLatestDate() {
-        if(rates.isEmpty()) {
+        if (rates.isEmpty()) {
             return null;
         }
 
@@ -39,6 +39,16 @@ public class InMemoryMarketRateRepository implements MarketRateRepository {
     public MarketRate findByMarketCodeAndDate(String marketCode, Date date) {
         return rates.stream()
                 .filter(r -> r.marketCode().equals(marketCode) && r.date().equals(date))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public MarketRate findByMarketCodeAndDayAndHour(String marketCode, Date day, Integer hour) {
+        return rates.stream()
+                .filter(r -> r.marketCode().equals(marketCode)
+                        && r.day().equals(day)
+                        && r.hour().equals(hour))
                 .findFirst()
                 .orElse(null);
     }

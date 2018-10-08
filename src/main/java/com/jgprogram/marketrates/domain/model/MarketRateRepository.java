@@ -8,4 +8,6 @@ public interface MarketRateRepository {
     Date findLatestDate();
 
     MarketRate findByMarketCodeAndDate(String marketCode, Date date);
+
+    MarketRate findByMarketCodeAndDayAndHour(String marketCode, Date day, Integer hour);
 }
