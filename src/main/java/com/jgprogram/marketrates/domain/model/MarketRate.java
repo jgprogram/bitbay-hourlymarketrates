@@ -1,6 +1,7 @@
 package com.jgprogram.marketrates.domain.model;
 
 import com.jgprogram.common.domain.model.DomainEntity;
+import com.jgprogram.common.util.TimeFullUnit;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -9,6 +10,8 @@ import java.util.Date;
 public class MarketRate extends DomainEntity {
     private String marketCode;
     private Date date;
+    private Date day;
+    private Integer hour;
     private BigDecimal open;
     private BigDecimal close;
     private BigDecimal highest;
@@ -22,6 +25,8 @@ public class MarketRate extends DomainEntity {
         setClose(close);
         setHighest(highest);
         setLowest(lowest);
+        calculateDay(date);
+        calculateHour(date);
         calculateAverage();
     }
 
@@ -31,6 +36,14 @@ public class MarketRate extends DomainEntity {
 
     public Date date() {
         return date;
+    }
+
+    public Date day() {
+        return day;
+    }
+
+    public Integer hour() {
+        return hour;
     }
 
     public BigDecimal open() {
@@ -57,6 +70,14 @@ public class MarketRate extends DomainEntity {
         average = open
                 .add(close)
                 .divide(BigDecimal.valueOf(2), RoundingMode.HALF_UP);
+    }
+
+    private void calculateDay(Date date) {
+        this.day = TimeFullUnit.dayFrom(date);
+    }
+
+    private void calculateHour(Date date) {
+        this.hour = TimeFullUnit.hourFrom(date);
     }
 
     private void setMarketCode(String marketCode) {

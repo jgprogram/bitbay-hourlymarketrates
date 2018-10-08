@@ -8,6 +8,8 @@ import com.jgprogram.common.util.TimeFullUnit;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import static java.math.BigDecimal.ROUND_HALF_UP;
@@ -19,7 +21,12 @@ public class MarketRateSpec {
 
     @Test
     public void should_create_new_market_rate() {
-        MarketRateDTO marketRateDTO = marketRateDTO("BTC-PLN", new Date(1538352000000L));
+        final Date date = Date.from(
+                LocalDateTime.parse("2018-10-01T12:00:00").atZone(ZoneId.systemDefault()).toInstant());
+        final Date day = Date.from(
+                LocalDateTime.parse("2018-10-01T00:00:00").atZone(ZoneId.systemDefault()).toInstant());
+        final Integer hour = 12;
+        MarketRateDTO marketRateDTO = marketRateDTO("BTC-PLN", date);
         MarketRate expectedMarketRate = marketRateFromDTO(marketRateDTO);
         MarketRateRepository marketRateRepository = mock(MarketRateRepository.class);
         MarketRateService service = new MarketRateService(marketRateRepository);
@@ -30,6 +37,8 @@ public class MarketRateSpec {
                 .add(any(MarketRate.class));
         assertThat(expectedMarketRate.marketCode(), is(marketRateDTO.getMarketCode()));
         assertThat(expectedMarketRate.date(), is(marketRateDTO.getDate()));
+        assertThat(expectedMarketRate.day(), is(day));
+        assertThat(expectedMarketRate.hour(), is(hour));
         assertThat(expectedMarketRate.open(), is(BigDecimal.valueOf(marketRateDTO.getOpen())));
         assertThat(expectedMarketRate.close(), is(BigDecimal.valueOf(marketRateDTO.getClose())));
         assertThat(expectedMarketRate.highest(), is(BigDecimal.valueOf(marketRateDTO.getHighest())));

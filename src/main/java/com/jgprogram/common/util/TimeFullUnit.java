@@ -60,7 +60,6 @@ public class TimeFullUnit {
                         .plusMinutes(1)
                         .atZone(ZoneId.systemDefault())
                         .toInstant());
-
     }
 
     public static Date oneYearLater(Date since) {
@@ -90,5 +89,21 @@ public class TimeFullUnit {
                 .plusMinutes(1);
 
         return Duration.between(nowDate, nextFullMinute).get(ChronoUnit.MILLIS);
+    }
+
+    public static Date dayFrom(Date date) {
+        return Date.from(
+                LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault())
+                        .withHour(0)
+                        .withMinute(0)
+                        .withSecond(0)
+                        .withNano(0)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant());
+    }
+
+    public static Integer hourFrom(Date date) {
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault())
+                .getHour();
     }
 }
