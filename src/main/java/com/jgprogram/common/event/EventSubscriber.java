@@ -1,4 +1,4 @@
-package com.jgprogram.marketrates.event;
+package com.jgprogram.common.event;
 
 public interface EventSubscriber<T extends Event>{
 

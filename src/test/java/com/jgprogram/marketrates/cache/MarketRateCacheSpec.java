@@ -7,7 +7,7 @@ import com.jgprogram.marketrates.bitbay.MarketRateDataLoadCompleted;
 import com.jgprogram.marketrates.bitbay.MarketRateDataLoadErrorOccurred;
 import com.jgprogram.marketrates.bitbay.MarketRateDataLoaded;
 import org.junit.Test;
-import com.jgprogram.marketrates.event.EventBus;
+import com.jgprogram.common.event.EventBus;
 import org.mockito.ArgumentCaptor;
 
 import java.util.Arrays;

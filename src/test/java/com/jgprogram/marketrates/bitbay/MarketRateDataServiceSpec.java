@@ -2,7 +2,7 @@ package com.jgprogram.marketrates.bitbay;
 
 import com.jgprogram.marketrates.Specification;
 import com.jgprogram.marketrates.application.MarketRateService;
-import com.jgprogram.marketrates.event.EventBus;
+import com.jgprogram.common.event.EventBus;
 import com.jgprogram.marketrates.cache.MarketRateDataCache;
 import com.jgprogram.marketrates.cache.MarketRateDataLoadCompletedSubscriber;
 import com.jgprogram.marketrates.cache.MarketRateDataLoadErrorOccurredSubscriber;

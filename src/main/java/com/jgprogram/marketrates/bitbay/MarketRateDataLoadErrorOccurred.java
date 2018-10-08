@@ -1,6 +1,6 @@
 package com.jgprogram.marketrates.bitbay;
 
-import com.jgprogram.marketrates.event.Event;
+import com.jgprogram.common.event.Event;
 
 import java.util.Date;
 

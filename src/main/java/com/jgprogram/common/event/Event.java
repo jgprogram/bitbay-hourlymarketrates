@@ -1,4 +1,4 @@
-package com.jgprogram.marketrates.event;
+package com.jgprogram.common.event;
 
 import java.util.Date;
 

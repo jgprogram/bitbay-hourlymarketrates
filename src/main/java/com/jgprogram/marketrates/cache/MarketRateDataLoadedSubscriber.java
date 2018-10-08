@@ -1,6 +1,6 @@
 package com.jgprogram.marketrates.cache;
 
-import com.jgprogram.marketrates.event.EventSubscriber;
+import com.jgprogram.common.event.EventSubscriber;
 import com.jgprogram.marketrates.bitbay.MarketRateDataLoaded;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

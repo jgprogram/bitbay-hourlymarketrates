@@ -1,11 +1,10 @@
 package com.jgprogram.marketrates.bitbay;
 
-import com.jgprogram.marketrates.event.EventBus;
+import com.jgprogram.common.event.EventBus;
 import com.jgprogram.common.util.TimeFullUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
