@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  adminer:
+    image: adminer
+    container_name: mr-adminer
+    restart: always
+    ports:
+      - 8081:8080
+  mariaDb:
+    image: mariadb:10.3
+    container_name: mr-mariadb
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=bitbay12wsx
+      - MYSQL_DATABASE=mrdb
+      - MYSQL_USER=dbuser
+      - MYSQL_PASSWORD=zaq12wsx
+    ports:
+      - 3306:3306
+    volumes:
+      - ./var/mariadb/:/var/lib/mysql
+      - ./docker-entrypoint-initdb.d/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+  redis:
+    image: redis:4
+    container_name: mr-redis
+    restart: always
+    ports:
+      - 6379:6379

@@ -8,11 +8,13 @@ import com.jgprogram.marketrates.domain.model.MarketRate;
 import com.jgprogram.marketrates.domain.model.MarketRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
 
 @Service
+@Transactional
 public class MarketRateService {
 
     private final MarketRateRepository marketRateRepository;

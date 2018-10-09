@@ -8,6 +8,9 @@ import java.math.RoundingMode;
 import java.util.Date;
 
 public class MarketRate extends DomainEntity {
+
+    static final long serialVersionUID = 1L;
+
     private String marketCode;
     private Date date;
     private Date day;
@@ -17,6 +20,10 @@ public class MarketRate extends DomainEntity {
     private BigDecimal highest;
     private BigDecimal lowest;
     private BigDecimal average;
+
+    private MarketRate() {
+
+    }
 
     public MarketRate(String marketCode, Date date, Double open, Double close, Double highest, Double lowest) {
         setMarketCode(marketCode);

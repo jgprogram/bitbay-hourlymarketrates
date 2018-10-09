@@ -2,9 +2,12 @@ package com.jgprogram.marketrates.bitbay;
 
 import com.jgprogram.common.event.Event;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class MarketRateDataLoaded implements Event {
+public class MarketRateDataLoaded implements Event, Serializable {
+
+    static final long serialVersionUID = 1L;
 
     private final String requestId;
     private final Date occurredOn;

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings version="2.1"
+                 xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm orm_2_1.xsd">
+    <description>Mapping for market rate entities</description>
+    <mapped-superclass class="com.jgprogram.common.domain.model.DomainEntity" access="FIELD">
+        <attributes>
+            <id name="id">
+                <column name="id"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+        </attributes>
+    </mapped-superclass>
+
+    <entity name="MarketRate" class="com.jgprogram.marketrates.domain.model.MarketRate" access="FIELD">
+        <table name="market_rate"/>
+        <attributes>
+            <basic name="marketCode">
+                <column name="market_code" length="7" nullable="false" />
+            </basic>
+            <basic name="date">
+                <column name="date_mr" nullable="false" />
+            </basic>
+            <basic name="day">
+                <column name="day_mr" nullable="false" />
+            </basic>
+            <basic name="hour">
+                <column name="hour_mr" length="2" nullable="false" />
+            </basic>
+            <basic name="open">
+                <column name="open_mr" nullable="false" />
+            </basic>
+            <basic name="close">
+                <column name="close_mr" nullable="false" />
+            </basic>
+            <basic name="highest">
+                <column name="highest" nullable="false" />
+            </basic>
+            <basic name="lowest">
+                <column name="lowest" nullable="false" />
+            </basic>
+            <basic name="average">
+                <column name="average" nullable="false" />
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

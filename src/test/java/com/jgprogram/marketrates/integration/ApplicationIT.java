@@ -26,7 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @AutoConfigureMockMvc
-@ActiveProfiles(profiles = {"inMemoryRepositories"})
 public class ApplicationIT extends IntegrationTestCase {
 
     @Autowired
