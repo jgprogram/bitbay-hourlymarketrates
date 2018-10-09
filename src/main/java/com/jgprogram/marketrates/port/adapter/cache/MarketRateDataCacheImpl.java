@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Repository
 public class MarketRateDataCacheImpl implements MarketRateDataCache {
@@ -29,6 +30,7 @@ public class MarketRateDataCacheImpl implements MarketRateDataCache {
     @Override
     public void add(MarketRateDataLoaded marketRateDataLoaded) {
         hashOperations.put(marketRateDataLoaded.requestId(), marketRateDataLoaded.date(), marketRateDataLoaded);
+        redisTemplate.expire(marketRateDataLoaded.requestId(), 1, TimeUnit.DAYS);
     }
 
     @Override
