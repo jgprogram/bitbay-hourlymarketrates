@@ -30,7 +30,7 @@ public class MarketRateUpdateTask {
         this.marketRateDataService = marketRateDataService;
     }
 
-    @Scheduled(fixedDelay = 1800000) //30 min
+    @Scheduled(fixedDelay = 60000) //1 min
     public void loadData() {
         Date latestRateDate = marketRateService.getLatestMarketRate().getDate();
         if(latestRateDate == null) {
