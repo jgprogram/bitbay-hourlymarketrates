@@ -63,6 +63,7 @@ public class MarketRateService {
 
         List<HourlyMarketRatesDTO.HourRateDTO> sortedHourlyRates = Arrays.stream(hours)
                 .map(h -> marketRateRepository.findByMarketCodeAndDayAndHour(marketCode, day, h))
+                .filter(mr -> mr != null)
                 .map(mr -> new HourlyMarketRatesDTO.HourRateDTO(mr.hour(), mr.average().doubleValue()))
                 .sorted(Comparator.comparing(HourlyMarketRatesDTO.HourRateDTO::getHour))
                 .collect(ImmutableList.toImmutableList());

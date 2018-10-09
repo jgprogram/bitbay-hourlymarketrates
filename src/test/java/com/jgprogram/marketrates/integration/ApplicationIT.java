@@ -39,7 +39,7 @@ public class ApplicationIT extends IntegrationTestCase {
     public void should_find_market_rate_by_date_and_hours() throws Exception {
         setup();
         String marketCode = "BTC-PLN";
-        String day = "2017-01-01";
+        String day = "1990-01-01";
         int[] hours = {8, 12, 16};
 
         mockMvc.perform(get(buildMarketRatesUrl(marketCode, day, hours))
@@ -47,6 +47,7 @@ public class ApplicationIT extends IntegrationTestCase {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.day", is(day)))
+                .andExpect(jsonPath("$.hours", hasSize(3)))
                 .andExpect(jsonPath("$.hours[0].hour", is(8)))
                 .andExpect(jsonPath("$.hours[0].avgRate", is(8.00)))
                 .andExpect(jsonPath("$.hours[1].hour", is(12)))
@@ -55,8 +56,24 @@ public class ApplicationIT extends IntegrationTestCase {
                 .andExpect(jsonPath("$.hours[2].avgRate", is(16.00)));
     }
 
+    @Test
+    public void should_return_empty_if_lack_of_hour() throws Exception {
+        setup();
+        String marketCode = "BTC-PLN";
+        String day = "1990-01-01";
+        int[] hours = {0, 12};
+
+        mockMvc.perform(get(buildMarketRatesUrl(marketCode, day, hours))
+                .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.day", is(day)))
+                .andExpect(jsonPath("$.hours", hasSize(1)))
+                .andExpect(jsonPath("$.hours[0].hour", is(12)))
+                .andExpect(jsonPath("$.hours[0].avgRate", is(12.00)));
+    }
+
     private void setup() throws Exception {
-        eventBusInitializer.onAppReady();
         prepareData();
     }
 
@@ -81,7 +98,7 @@ public class ApplicationIT extends IntegrationTestCase {
 
     private void prepareData() throws Exception {
         final String marketCode = "BTC-PLN";
-        final Date dateSince = dateOf(2017, Month.JANUARY, 1, 0, 0, 0);
+        final Date dateSince = dateOf(1990, Month.JANUARY, 1, 0, 0, 0);
         final Date dateTo = TimeFullUnit.oneYearLater(dateSince);
 
         TradingTickerService tradingTickerService = mock(TradingTickerService.class);
@@ -97,17 +114,17 @@ public class ApplicationIT extends IntegrationTestCase {
                         Arrays.asList(
                                 new MarketRateData(
                                         marketCode,
-                                        dateOf(2017, Month.JANUARY, 1, 8, 0, 0),
+                                        dateOf(1990, Month.JANUARY, 1, 8, 0, 0),
                                         8D,8D, 8D, 8D, 8D
                                 ),
                                 new MarketRateData(
                                         marketCode,
-                                        dateOf(2017, Month.JANUARY, 1, 12, 0, 0),
+                                        dateOf(1990, Month.JANUARY, 1, 12, 0, 0),
                                         12D,12D, 12D, 12D, 12D
                                 ),
                                 new MarketRateData(
                                         marketCode,
-                                        dateOf(2017, Month.JANUARY, 1, 16, 0, 0),
+                                        dateOf(1990, Month.JANUARY, 1, 16, 0, 0),
                                         16D,16D, 16D, 16D, 16D
                                 )
                         )
