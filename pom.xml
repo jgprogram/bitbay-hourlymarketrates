@@ -68,9 +68,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <profiles>
-                        <profile>inMemoryRepositories</profile>
-                    </profiles>
                 </configuration>
             </plugin>
 
