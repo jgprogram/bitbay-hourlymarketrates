@@ -18,18 +18,18 @@ public class MarketRateDataCacheImpl implements MarketRateDataCache {
     private HashOperations hashOperations;
 
     @Autowired
-    public MarketRateDataCacheImpl(RedisTemplate<String, Object> redisTemplate){
+    public MarketRateDataCacheImpl(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
     @PostConstruct
-    private void init(){
+    private void init() {
         hashOperations = redisTemplate.opsForHash();
     }
 
     @Override
     public void add(MarketRateDataLoaded marketRateDataLoaded) {
-        hashOperations.put(marketRateDataLoaded.requestId(), marketRateDataLoaded.date(), marketRateDataLoaded);
+        hashOperations.put(marketRateDataLoaded.requestId(), buildId(marketRateDataLoaded), marketRateDataLoaded);
         redisTemplate.expire(marketRateDataLoaded.requestId(), 1, TimeUnit.DAYS);
     }
 
@@ -41,5 +41,9 @@ public class MarketRateDataCacheImpl implements MarketRateDataCache {
     @Override
     public void removeByRequestId(String requestId) {
         redisTemplate.delete(requestId);
+    }
+
+    private String buildId(MarketRateDataLoaded marketRateDataLoaded) {
+        return marketRateDataLoaded.code() + marketRateDataLoaded.date().toInstant().getEpochSecond();
     }
 }
