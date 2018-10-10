@@ -17,7 +17,7 @@
         <table name="market_rate"/>
         <attributes>
             <basic name="marketCode">
-                <column name="market_code" length="7" nullable="false" />
+                <column name="market_code" length="15" nullable="false" />
             </basic>
             <basic name="date">
                 <column name="date_mr" nullable="false" />

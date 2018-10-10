@@ -3,7 +3,7 @@ USE `mrdb`;
 DROP TABLE IF EXISTS `market_rate`;
 CREATE TABLE `market_rate` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `market_code` varchar(7) NOT NULL,
+  `market_code` varchar(15) NOT NULL,
   `date_mr` DATETIME NOT NULL,
   `day_mr` DATE NOT NULL,
   `hour_mr` int(2) NOT NULL,
