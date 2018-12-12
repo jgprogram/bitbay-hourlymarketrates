@@ -1,7 +1,9 @@
-# bitbay-hourlymarketrates
+# BitBay hourly market rates
 
 Service publish bitabay market rates hourly.
+
 Branch 'master' has in-memory infrastucture.
+
 Branch `infra/sql` infrastucture implemented with MariaDB for domain and Redis for cache and 24 hours backup.
 
 ## How to run
@@ -29,4 +31,4 @@ Get rates from GNT-PLN market at 2018-09-29 and 6,12,16 hours:
 ![Architecture schema](https://jgprogram.files.wordpress.com/2018/11/architectureschema.png)
 
 ## Author
-Jacek Gzel
+- Jacek Gzel
