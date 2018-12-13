@@ -1,6 +1,6 @@
 # BitBay hourly market rates
 
-Service publish bitabay market rates hourly.
+Service publishing bitabay market rates hourly.
 
 Branch 'master' has in-memory infrastucture.
 
